@@ -14,7 +14,7 @@ export default async function BookPage({ params, searchParams }: { params: Promi
     where: { slug, status: "APPROVED", user: { status: "ACTIVE" } },
     include: { country: { include: { currency: true } }, services: { where: { active: true, deletedAt: null }, orderBy: { priceMinor: "asc" } }, serviceAreas: { include: { city: true } } },
   });
-  if (!p) notFound();
+  if (!p || p.isSample) notFound();
   const user = await currentUser();
   return (
     <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">

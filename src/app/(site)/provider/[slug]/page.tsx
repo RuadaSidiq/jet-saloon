@@ -58,7 +58,7 @@ export default async function ProviderPage({ params }: { params: Promise<{ slug:
         <div className="flex-1">
           <h1 className="text-2xl font-semibold tracking-tight">{p.businessName}</h1>
           <p className="mt-1 flex flex-wrap items-center gap-2 text-sm text-muted">
-            <Badge tone="ok">✓ Verified</Badge>
+            {p.isSample ? <Badge>Sample profile</Badge> : <Badge tone="ok">✓ Verified</Badge>}
             <span>{p.displayName}</span>·<span>{[p.neighbourhood?.name, p.city?.name].filter(Boolean).join(", ")}</span>
             {p.yearsExperience > 0 && <>·<span>{p.yearsExperience} yrs experience</span></>}
           </p>
@@ -66,10 +66,11 @@ export default async function ProviderPage({ params }: { params: Promise<{ slug:
         </div>
         <div className="flex gap-2">
           {user && <FavouriteButton providerId={p.id} saved={fav} />}
-          <Link href={`/book/${p.slug}`} className={btn({ size: "lg" })}>Book now</Link>
+          {!p.isSample && <Link href={`/book/${p.slug}`} className={btn({ size: "lg" })}>Book now</Link>}
         </div>
       </div>
 
+      {p.isSample && <div className="mt-6 rounded-2xl border border-white/80 bg-white/70 px-4 py-3 text-sm text-muted backdrop-blur-md">This is a sample profile showing how professionals appear on Muv. It can&apos;t be booked.</div>}
       <div className="mt-8 grid gap-6 lg:grid-cols-[1fr_340px]">
         <div className="space-y-6">
           {p.portfolio.length > 0 && (
@@ -96,7 +97,7 @@ export default async function ProviderPage({ params }: { params: Promise<{ slug:
                       {s.promoPriceMinor != null && <span className="mr-2 text-sm text-muted line-through">{money(s.priceMinor, cur)}</span>}
                       <span className="font-semibold">{money(s.promoPriceMinor ?? s.priceMinor, cur)}</span>
                     </div>
-                    <Link href={`/book/${p.slug}?service=${s.id}`} className={btn({ variant: "secondary", size: "sm" })}>Book</Link>
+                    {!p.isSample && <Link href={`/book/${p.slug}?service=${s.id}`} className={btn({ variant: "secondary", size: "sm" })}>Book</Link>}
                   </div>
                 </li>
               ))}

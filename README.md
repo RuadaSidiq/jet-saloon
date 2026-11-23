@@ -1,4 +1,4 @@
-# Jet Saloon — beauty services marketplace
+# Muv — beauty services marketplace
 
 A multi-vendor marketplace connecting customers with verified beauty and personal-care professionals across Africa. Ghana is the launch market; countries, currencies, gateways and payout channels are data, not code.
 

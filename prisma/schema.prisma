@@ -282,6 +282,7 @@ model ProviderProfile {
   freeCancelHours  Int            @default(24)
   featured         Boolean        @default(false)
   featuredUntil    DateTime?
+  isSample         Boolean        @default(false) // illustrative listing: shown with a badge, never bookable
   ratingAvg        Float          @default(0)
   ratingCount      Int            @default(0)
   profileViews     Int            @default(0)

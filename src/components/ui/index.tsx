@@ -6,7 +6,7 @@ export const btn = ({ variant = "primary", size = "md", className }: BtnProps = 
   cn(
     "inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all disabled:opacity-50 disabled:pointer-events-none whitespace-nowrap",
     size === "sm" && "h-8 px-3 text-sm", size === "md" && "h-10 px-4 text-sm", size === "lg" && "h-12 px-6 text-base",
-    variant === "primary" && "bg-gradient-to-b from-[#2a7ae0] to-brand text-white shadow-[0_8px_20px_-8px_rgba(23,105,210,.6)] hover:from-brand hover:to-brand-dark hover:shadow-[0_10px_24px_-8px_rgba(18,61,117,.6)]",
+    variant === "primary" && "bg-brand text-white shadow-[0_8px_20px_-10px_rgba(23,105,210,.55)] hover:bg-brand-dark",
     variant === "secondary" && "border border-white/80 bg-white/60 text-ink backdrop-blur-md shadow-[0_4px_14px_-8px_rgba(18,61,117,.25)] hover:bg-white/85 hover:text-brand",
     variant === "ghost" && "text-brand hover:bg-white/60",
     variant === "danger" && "border border-bad/25 bg-white/60 text-bad backdrop-blur-md hover:bg-bad-soft",

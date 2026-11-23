@@ -16,7 +16,7 @@ export default async function Ticket({ params }: { params: Promise<{ ref: string
       <Card>
         <ul className="space-y-4">{t.messages.map((m) => (
           <li key={m.id} className={m.author.id === user.id ? "" : "rounded-2xl bg-brand-soft p-3"}>
-            <p className="text-xs text-muted">{m.author.id === user.id ? "You" : "Jet Saloon support"} · {m.createdAt.toLocaleString("en-GB", { dateStyle: "medium", timeStyle: "short" })}</p>
+            <p className="text-xs text-muted">{m.author.id === user.id ? "You" : "Muv support"} · {m.createdAt.toLocaleString("en-GB", { dateStyle: "medium", timeStyle: "short" })}</p>
             <p className="mt-1 whitespace-pre-line text-sm">{m.body}</p>
           </li>
         ))}</ul>

@@ -20,6 +20,15 @@ describe("availability", () => {
     expect(slots.at(-1)!.startsAt.slice(11, 16)).toBe("15:30");
   });
 
+  it("never lets anyone book a sample profile", async () => {
+    const { provider, service } = await makeProvider();
+    await db.providerProfile.update({ where: { id: provider.id }, data: { isSample: true } });
+    const c = await makeUser();
+    const date = localDateOf(new Date(slotAt()), "Africa/Accra");
+    expect(await computeSlots({ providerId: provider.id, date, plan: planFor([service]) })).toEqual([]);
+    await expect(createBooking(base(c.id, provider.id, service.id))).rejects.toThrow(/sample profile/);
+  });
+
   it("offers nothing for unapproved providers", async () => {
     const { provider, service } = await makeProvider();
     await db.providerProfile.update({ where: { id: provider.id }, data: { status: "SUBMITTED" } });

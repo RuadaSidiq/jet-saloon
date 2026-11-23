@@ -8,7 +8,7 @@ export async function SiteFooter() {
     db.city.findMany({ where: { active: true, country: { active: true } }, take: 6, orderBy: { name: "asc" } }),
   ]);
   return (
-    <footer className="mt-20 rounded-t-[32px] bg-gradient-to-br from-brand-dark to-[#0f3264] text-sm text-white/80">
+    <footer className="mt-20 rounded-t-[32px] bg-brand-dark text-sm text-white/80">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:grid-cols-2 sm:px-6 lg:grid-cols-5">
         <div className="lg:col-span-2">
           <Logo light />
@@ -24,7 +24,7 @@ export async function SiteFooter() {
           <li><Link className="hover:text-white" href="/legal/refunds">Refund policy</Link></li>
         </ul></div>
       </div>
-      <div className="border-t border-white/10"><div className="mx-auto max-w-7xl px-4 py-5 text-xs sm:px-6">© {new Date().getFullYear()} Jet Saloon. All rights reserved.</div></div>
+      <div className="border-t border-white/10"><div className="mx-auto max-w-7xl px-4 py-5 text-xs sm:px-6">© {new Date().getFullYear()} Muv. All rights reserved.</div></div>
     </footer>
   );
 }

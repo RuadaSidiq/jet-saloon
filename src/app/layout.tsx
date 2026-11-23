@@ -9,7 +9,7 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 export async function generateMetadata(): Promise<Metadata> {
   const s = await getAllSettings().catch(() => null);
   return {
-    title: { default: s?.["seo.title"] ?? "Jet Saloon", template: `%s · ${s?.["general.platformName"] ?? "Jet Saloon"}` },
+    title: { default: s?.["seo.title"] ?? "Muv", template: `%s · ${s?.["general.platformName"] ?? "Muv"}` },
     description: s?.["seo.description"],
     metadataBase: new URL(appUrl()),
   };

@@ -2,7 +2,7 @@ import { db } from "../db";
 
 /** Platform settings with typed defaults. Stored as JSON rows in PlatformSetting. */
 export const SETTING_DEFAULTS = {
-  "general.platformName": "Jet Saloon",
+  "general.platformName": "Muv",
   "general.supportEmail": "support@example.com",
   "general.supportPhone": "",
   "booking.defaultMode": "INSTANT" as "INSTANT" | "APPROVAL",
@@ -13,7 +13,7 @@ export const SETTING_DEFAULTS = {
   "finance.settlementDelayHours": 48,
   "finance.defaultCommissionBps": 1500,
   "provider.requireIdDocument": true,
-  "seo.title": "Jet Saloon — Book trusted beauty professionals",
+  "seo.title": "Muv — Book trusted beauty professionals near you",
   "seo.description": "Discover and book verified makeup artists, barbers, stylists, nail and lash technicians near you.",
   "legal.terms": "",
   "legal.privacy": "",

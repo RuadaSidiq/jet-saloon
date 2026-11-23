@@ -7,7 +7,7 @@ import { btn } from "@/components/ui";
 
 export function Logo({ light = false }: { light?: boolean }) {
   return (
-    <Link href="/" aria-label="Jet Saloon home">
+    <Link href="/" aria-label="Muv home">
       <BrandLogo light={light} />
     </Link>
   );

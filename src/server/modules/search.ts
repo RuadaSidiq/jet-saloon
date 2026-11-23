@@ -70,7 +70,7 @@ export async function searchProviders(p: SearchParams) {
   ]);
   let results = rows.map((r) => ({
     id: r.id, slug: r.slug, businessName: r.businessName, displayName: r.displayName, avatarUrl: r.avatarUrl, coverUrl: r.portfolio[0]?.url ?? r.coverUrl,
-    verified: true, featured: r.featured, ratingAvg: r.ratingAvg, ratingCount: r.ratingCount,
+    verified: !r.isSample, sample: r.isSample, featured: r.featured, ratingAvg: r.ratingAvg, ratingCount: r.ratingCount,
     location: [r.neighbourhood?.name, r.city?.name].filter(Boolean).join(", "), offersHome: r.offersHome, offersStudio: r.offersStudio,
     categories: r.categories.map((c) => c.category.name),
     fromPriceMinor: r.services[0]?.promoPriceMinor ?? r.services[0]?.priceMinor ?? null, currency: r.country.currency,

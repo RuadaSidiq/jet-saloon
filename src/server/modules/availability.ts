@@ -50,7 +50,7 @@ export async function computeSlots(
 ): Promise<Slot[]> {
   if (!/^\d{4}-\d{2}-\d{2}$/.test(args.date)) throw new AppError("BAD_DATE", "Invalid date");
   const provider = await tx.providerProfile.findUnique({ where: { id: args.providerId } });
-  if (!provider || provider.status !== "APPROVED") return [];
+  if (!provider || provider.status !== "APPROVED" || provider.isSample) return [];
   const tz = provider.timezone;
   const now = args.now ?? new Date();
   const earliest = new Date(now.getTime() + provider.minNoticeMinutes * 60_000);

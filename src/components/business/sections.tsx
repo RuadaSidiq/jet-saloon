@@ -50,7 +50,7 @@ export function DocumentsManager({ docs, required }: { docs: ProviderDocument[];
 export function ConsentForm({ consent }: { consent: boolean }) {
   return (
     <ActionForm action={consentAction} className="rounded-2xl border border-line bg-canvas p-4">
-      <Check name="consent" defaultChecked={consent} label="I confirm the information and documents I've provided are genuine, and I consent to Jet Saloon verifying them for the purpose of approving my account." />
+      <Check name="consent" defaultChecked={consent} label="I confirm the information and documents I've provided are genuine, and I consent to Muv verifying them for the purpose of approving my account." />
       <div className="mt-3"><Submit size="sm" variant="secondary">Save consent</Submit></div>
     </ActionForm>
   );

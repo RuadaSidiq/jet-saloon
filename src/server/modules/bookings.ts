@@ -61,6 +61,7 @@ export async function createBooking(input: CreateBookingInput) {
 
   const provider = await db.providerProfile.findUnique({ where: { id: input.providerId }, include: { country: { include: { currency: true } }, city: true, serviceAreas: true } });
   if (!provider || provider.status !== "APPROVED") throw new AppError("PROVIDER_UNAVAILABLE", "This professional is not accepting bookings");
+  if (provider.isSample) throw new AppError("SAMPLE_PROFILE", "This is a sample profile for illustration and can't take bookings.");
   if (provider.userId === input.customerId) throw new AppError("SELF_BOOKING", "You cannot book your own services");
   const customer = await db.user.findUnique({ where: { id: input.customerId } });
   if (!customer || customer.status !== "ACTIVE") throw forbidden();

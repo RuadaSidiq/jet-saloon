@@ -1,6 +1,4 @@
 import Link from "next/link";
-import { existsSync } from "fs";
-import path from "path";
 import { ArrowRight, BadgeCheck, CalendarClock, MapPin, Search, ShieldCheck, Smartphone, Sparkles, Star, Wallet } from "lucide-react";
 import { db } from "@/server/db";
 import { searchProviders } from "@/server/modules/search";
@@ -12,11 +10,8 @@ import { Stars, btn } from "@/components/ui";
 
 export const dynamic = "force-dynamic";
 
-// Drop a photo at public/brand/hero.jpg to use it as the default hero image.
-const HERO_FALLBACK = existsSync(path.join(process.cwd(), "public/brand/hero.jpg"));
-
 const FAQ = [
-  ["How do I know a professional is trustworthy?", "Every professional on Jet Saloon is reviewed by our verification team before they can accept bookings. Reviews can only be left by customers who completed a booking."],
+  ["How do I know a professional is trustworthy?", "Every professional on Muv is reviewed by our verification team before they can accept bookings. Reviews can only be left by customers who completed a booking."],
   ["When am I charged?", "For instant bookings you pay when you book, and your slot is held while you pay. For professionals who approve requests first, you're only asked to pay after they accept."],
   ["Can I cancel?", "Yes. Cancel from your account. Cancellations made before the professional's free-cancellation window are refunded in full to your original payment method."],
   ["Which payment methods can I use?", "Mobile Money and bank cards, processed securely by our licensed payment partners. We never see or store your card details."],
@@ -41,14 +36,13 @@ export default async function Home() {
     <>
       {/* ── Hero ── */}
       <section className="relative overflow-hidden">
-        <div aria-hidden className="pointer-events-none absolute -top-40 left-1/3 size-[42rem] rounded-full bg-[#5b9ae8]/20 blur-3xl" />
         <div className="relative mx-auto grid max-w-7xl items-center gap-14 px-4 pb-16 pt-12 sm:px-6 lg:grid-cols-[1.05fr_1fr] lg:pb-24 lg:pt-16">
           <div>
             <p className="glass inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-medium text-brand-dark">
               <BadgeCheck className="size-4 text-brand" /> Verified professionals
             </p>
             <h1 className="mt-6 text-4xl font-semibold leading-[1.08] tracking-tight text-ink sm:text-5xl lg:text-[3.6rem]">
-              Beauty, <span className="bg-gradient-to-r from-brand via-[#3d8be6] to-brand-dark bg-clip-text text-transparent">booked.</span>
+              Beauty, <span className="text-brand">booked.</span>
             </h1>
             <p className="mt-4 max-w-md text-lg text-muted">Trusted beauty pros near you.</p>
 
@@ -77,7 +71,7 @@ export default async function Home() {
               })}
             </ul>
           </div>
-          <HeroVisual imageUrl={banner?.imageUrl ?? (HERO_FALLBACK ? "/brand/hero.jpg" : null)} />
+          <HeroVisual imageUrl={banner?.imageUrl} />
         </div>
       </section>
 
@@ -108,7 +102,7 @@ export default async function Home() {
 
       {featured && featured.results.some((r) => r.featured) && <ProviderRow title="Featured professionals" items={featured.results.filter((r) => r.featured).slice(0, 4)} href="/search" />}
       {rated.length > 0 && <ProviderRow title="Top-rated professionals" items={rated} href="/search?sort=rating" />}
-      {hasProviders && <ProviderRow title="New on Jet Saloon" items={recent.results.slice(0, 4)} href="/search?sort=newest" />}
+      {hasProviders && <ProviderRow title="New on Muv" items={recent.results.slice(0, 4)} href="/search?sort=newest" />}
 
       {popular.length > 0 && (
         <section className="mx-auto max-w-7xl px-4 pb-6 sm:px-6">
@@ -127,7 +121,7 @@ export default async function Home() {
               return (
                 <li key={t as string} className="relative">
                   <div className="flex items-center gap-4">
-                    <span className="grid size-14 place-items-center rounded-2xl bg-gradient-to-br from-brand-mid to-brand text-white shadow-[0_12px_28px_-12px_rgba(23,105,210,.8)]"><I className="size-6" strokeWidth={1.8} /></span>
+                    <span className="grid size-14 place-items-center rounded-2xl bg-brand text-white"><I className="size-6" strokeWidth={1.8} /></span>
                     <span className="tabular text-4xl font-semibold text-brand/15">0{i + 1}</span>
                   </div>
                   <p className="mt-5 text-lg font-semibold">{t as string}</p>
@@ -156,8 +150,7 @@ export default async function Home() {
 
       {/* ── Provider CTA ── */}
       <section className="mx-auto max-w-7xl px-4 pb-16 sm:px-6">
-        <div className="relative grid items-center gap-10 overflow-hidden rounded-[36px] bg-gradient-to-br from-brand via-[#1f74da] to-brand-dark px-6 py-12 text-white shadow-[0_30px_70px_-30px_rgba(18,61,117,.8)] sm:px-12 lg:grid-cols-[1.2fr_1fr]">
-          <div aria-hidden className="pointer-events-none absolute -right-20 -top-24 size-96 rounded-full bg-white/15 blur-3xl" />
+        <div className="relative grid items-center gap-10 overflow-hidden rounded-[36px] bg-brand px-6 py-12 text-white sm:px-12 lg:grid-cols-[1.2fr_1fr]">
           <div className="relative">
             <p className="inline-flex items-center gap-2 rounded-full bg-white/15 px-3 py-1 text-xs font-medium"><Sparkles className="size-3.5" /> For beauty professionals</p>
             <h2 className="mt-4 text-3xl font-semibold tracking-tight sm:text-4xl">Grow your beauty business</h2>
@@ -197,8 +190,8 @@ export default async function Home() {
       <section className="mx-auto mt-16 max-w-7xl px-4 sm:px-6">
         <div className="glass grid items-center gap-6 rounded-[32px] p-8 md:grid-cols-2">
           <div className="flex items-start gap-4">
-            <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-brand-mid to-brand text-white"><Smartphone className="size-6" /></span>
-            <div><h2 className="font-semibold">Mobile apps are on the way</h2><p className="mt-1 text-sm text-muted">Jet Saloon for Android and iOS is in development. Subscribe and we&apos;ll tell you the day it launches — plus occasional offers.</p></div>
+            <span className="grid size-12 shrink-0 place-items-center rounded-2xl bg-brand text-white"><Smartphone className="size-6" /></span>
+            <div><h2 className="font-semibold">Mobile apps are on the way</h2><p className="mt-1 text-sm text-muted">Muv for Android and iOS is in development. Subscribe and we&apos;ll tell you the day it launches — plus occasional offers.</p></div>
           </div>
           <div className="flex items-center md:justify-end"><Newsletter /></div>
         </div>
