@@ -7,7 +7,7 @@ const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 export function ProviderCard({ p }: { p: P }) {
   return (
-    <article className="group flex flex-col overflow-hidden rounded-[--radius-card] border border-line bg-white transition-shadow hover:shadow-[0_6px_24px_-12px_rgba(18,61,117,.35)]">
+    <article className="group flex flex-col overflow-hidden rounded-(--radius-card) border border-line bg-white transition-shadow hover:shadow-[0_6px_24px_-12px_rgba(18,61,117,.35)]">
       <Link href={`/provider/${p.slug}`} className="relative block aspect-[4/3] bg-brand-soft">
         {p.coverUrl ? (
           // eslint-disable-next-line @next/next/no-img-element

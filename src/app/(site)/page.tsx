@@ -36,7 +36,7 @@ export default async function Home() {
             <p className="text-sm font-medium text-brand">Verified beauty professionals</p>
             <h1 className="mt-3 max-w-xl text-3xl font-semibold leading-tight tracking-tight text-ink sm:text-[2.6rem]">Book the beauty professional you can trust.</h1>
             <p className="mt-4 max-w-lg text-muted">Makeup artists, barbers, stylists, nail and lash technicians — compare real work, see live availability and pay securely.</p>
-            <form action="/search" className="mt-8 rounded-[--radius-card] border border-line bg-white p-2 shadow-[0_8px_30px_-18px_rgba(18,61,117,.45)]">
+            <form action="/search" className="mt-8 rounded-(--radius-card) border border-line bg-white p-2 shadow-[0_8px_30px_-18px_rgba(18,61,117,.45)]">
               <div className="flex flex-col gap-2 sm:flex-row">
                 <label className="sr-only" htmlFor="hq">What are you looking for?</label>
                 <input id="hq" name="q" placeholder="e.g. bridal makeup, barber, lash technician" className="h-12 flex-1 rounded-md px-3 text-sm focus:outline-none" />
@@ -54,17 +54,26 @@ export default async function Home() {
               ))}
             </div>
           </div>
-          <div className="relative hidden overflow-hidden rounded-[--radius-card] bg-brand-dark lg:block">
-            {banner?.imageUrl ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img src={banner.imageUrl} alt="" className="absolute inset-0 h-full w-full object-cover opacity-80" />
-            ) : null}
-            <div className="relative flex h-full flex-col justify-end bg-gradient-to-t from-brand-dark/90 to-transparent p-8 text-white">
-              <p className="text-lg font-semibold">{banner?.title ?? "Your next appointment, sorted."}</p>
-              <p className="mt-1 text-sm text-white/80">{banner?.subtitle ?? "Real availability from verified professionals, confirmed the moment you pay."}</p>
-              {banner?.linkUrl && <Link href={banner.linkUrl} className="mt-4 self-start rounded-md bg-white px-4 py-2 text-sm font-medium text-brand-dark">Learn more</Link>}
+          {banner?.imageUrl ? (
+            <div className="relative hidden overflow-hidden rounded-(--radius-card) bg-brand-dark lg:block">
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src={banner.imageUrl} alt="" className="absolute inset-0 h-full w-full object-cover" />
+              <div className="relative flex h-full flex-col justify-end bg-gradient-to-t from-brand-dark/90 to-transparent p-8 text-white">
+                <p className="text-lg font-semibold">{banner.title}</p>
+                {banner.subtitle && <p className="mt-1 text-sm text-white/85">{banner.subtitle}</p>}
+                {banner.linkUrl && <Link href={banner.linkUrl} className="mt-4 self-start rounded-md bg-white px-4 py-2 text-sm font-medium text-brand-dark">Learn more</Link>}
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className="hidden self-center rounded-(--radius-card) border border-line bg-white p-8 lg:block">
+              <p className="font-semibold">{banner?.title ?? "Why customers book with Jet Saloon"}</p>
+              <ul className="mt-5 space-y-4 text-sm">
+                {[["Verified professionals", "Every professional is reviewed by our team before they can take bookings."], ["Real-time availability", "Only genuinely open slots are shown — no back-and-forth."], ["Secure payment", "Pay with Mobile Money or card. Free cancellation within each professional's policy."], ["Honest reviews", "Only customers who completed an appointment can leave a review."]].map(([t, b]) => (
+                  <li key={t} className="flex gap-3"><span className="mt-0.5 grid size-5 shrink-0 place-items-center rounded-full bg-brand-soft text-xs text-brand">✓</span><span><span className="font-medium">{t}</span><span className="block text-muted">{b}</span></span></li>
+                ))}
+              </ul>
+            </div>
+          )}
         </div>
       </section>
 
@@ -72,7 +81,7 @@ export default async function Home() {
         <div className="flex items-end justify-between"><h2 className="text-xl font-semibold">Browse by service</h2><Link href="/search" className="text-sm text-brand">All services</Link></div>
         <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
           {categories.map((c) => (
-            <Link key={c.id} href={`/search?category=${c.slug}`} className="group rounded-[--radius-card] border border-line bg-white p-4 hover:border-brand-mid">
+            <Link key={c.id} href={`/search?category=${c.slug}`} className="group rounded-(--radius-card) border border-line bg-white p-4 hover:border-brand-mid">
               {c.imageUrl && (
                 // eslint-disable-next-line @next/next/no-img-element
                 <img src={c.imageUrl} alt="" className="mb-3 aspect-[3/2] w-full rounded-md object-cover" />
@@ -111,7 +120,7 @@ export default async function Home() {
           <h2 className="text-xl font-semibold">What customers say</h2>
           <div className="mt-6 grid gap-4 md:grid-cols-3">
             {testimonials.map((t) => (
-              <figure key={t.id} className="rounded-[--radius-card] border border-line bg-white p-5">
+              <figure key={t.id} className="rounded-(--radius-card) border border-line bg-white p-5">
                 <Stars value={t.rating} />
                 <blockquote className="mt-3 text-sm leading-relaxed">“{t.comment}”</blockquote>
                 <figcaption className="mt-4 text-xs text-muted">{t.customer.name.split(" ")[0]} · booked <Link href={`/provider/${t.provider.slug}`} className="text-brand">{t.provider.businessName}</Link></figcaption>
@@ -122,7 +131,7 @@ export default async function Home() {
       )}
 
       <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6">
-        <div className="grid items-center gap-8 rounded-[--radius-card] bg-brand px-6 py-10 text-white sm:px-10 lg:grid-cols-[1.4fr_1fr]">
+        <div className="grid items-center gap-8 rounded-(--radius-card) bg-brand px-6 py-10 text-white sm:px-10 lg:grid-cols-[1.4fr_1fr]">
           <div>
             <h2 className="text-2xl font-semibold">Are you a beauty professional?</h2>
             <p className="mt-2 max-w-lg text-white/85">Join free. Get discovered by new clients, manage your calendar, take secure payments and get paid to Mobile Money or your bank.</p>
@@ -133,7 +142,7 @@ export default async function Home() {
 
       <section className="mx-auto grid max-w-7xl gap-10 px-4 py-6 sm:px-6 lg:grid-cols-[1fr_1.3fr]">
         <h2 className="text-xl font-semibold">Frequently asked questions</h2>
-        <div className="divide-y divide-line rounded-[--radius-card] border border-line">
+        <div className="divide-y divide-line rounded-(--radius-card) border border-line">
           {FAQ.map(([q, a]) => (
             <details key={q} className="group px-5 py-4"><summary className="cursor-pointer list-none font-medium marker:hidden">{q}</summary><p className="mt-2 text-sm text-muted">{a}</p></details>
           ))}
@@ -141,7 +150,7 @@ export default async function Home() {
       </section>
 
       <section className="mx-auto mt-14 max-w-7xl px-4 sm:px-6">
-        <div className="grid gap-6 rounded-[--radius-card] border border-line bg-canvas p-8 md:grid-cols-2">
+        <div className="grid gap-6 rounded-(--radius-card) border border-line bg-canvas p-8 md:grid-cols-2">
           <div>
             <h2 className="font-semibold">Mobile apps are on the way</h2>
             <p className="mt-1 text-sm text-muted">Jet Saloon for Android and iOS is in development. Subscribe and we&apos;ll tell you the day it launches — plus occasional offers.</p>

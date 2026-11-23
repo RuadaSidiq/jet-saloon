@@ -5,7 +5,7 @@ export function BarChart({ title, data, format = (n: number) => String(n) }: { t
   const step = (W - pad.l - pad.r) / Math.max(1, data.length);
   const bw = Math.max(2, Math.min(24, step - 2));
   const y = (v: number) => pad.t + (H - pad.t - pad.b) * (1 - v / max);
-  const ticks = [0, max / 2, max].map((t) => Math.round(t));
+  const ticks = [...new Set([0, max / 2, max].map((t) => Math.round(t)))];
   return (
     <figure>
       <figcaption className="mb-2 text-sm font-semibold">{title}</figcaption>

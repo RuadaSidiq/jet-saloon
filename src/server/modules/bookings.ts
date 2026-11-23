@@ -84,6 +84,12 @@ export async function createBooking(input: CreateBookingInput) {
     travelFeeMinor = Math.max(travelFeeMinor, ...services.map((s) => s.homeTravelFeeMinor));
   } else if (!provider.offersStudio) throw new AppError("LOCATION", "This professional only offers home service");
 
+  // Fail before reserving a slot if this market can't take online payment yet.
+  if (provider.bookingMode === "INSTANT") {
+    const { pickGateway } = await import("./payments/registry");
+    pickGateway(provider.country, currency);
+  }
+
   const start = new Date(input.startsAt);
   if (isNaN(start.getTime())) throw new AppError("TIME", "Invalid appointment time");
   const plan = planFor(services);

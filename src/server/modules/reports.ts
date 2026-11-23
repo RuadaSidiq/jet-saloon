@@ -75,7 +75,7 @@ export async function providerOverview(providerId: string) {
   return {
     total, upcoming, completed: s.COMPLETED ?? 0, cancelled: (s.CANCELLED ?? 0) + (s.REJECTED ?? 0), noShow: s.NO_SHOW ?? 0,
     ratingAvg: provider.ratingAvg, ratingCount: provider.ratingCount, profileViews: provider.profileViews, views30: v,
-    conversion30: v ? Math.round((bookings30 / v) * 1000) / 10 : null,
+    conversion30: v >= 20 ? Math.min(100, Math.round((bookings30 / v) * 1000) / 10) : null, // too few views to be meaningful
     customers: distinctCustomers.length, repeatCustomers: Number(repeatCustomers[0]?.n ?? 0),
   };
 }

@@ -1,36 +1,43 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Jet Saloon — beauty services marketplace
 
-## Getting Started
+A multi-vendor marketplace connecting customers with verified beauty and personal-care professionals across Africa. Ghana is the launch market; countries, currencies, gateways and payout channels are data, not code.
 
-First, run the development server:
+Three experiences on one backend:
+
+| Who | Where | What |
+|---|---|---|
+| Customers | `/`, `/search`, `/provider/[slug]`, `/book/[slug]`, `/account` | Discover, compare, book real availability, pay online, cancel/reschedule, review, message, support tickets |
+| Providers | `/become-a-provider`, `/business` | Multi-step application, services, hours/breaks/time off, team calendars, bookings, earnings, withdrawals |
+| Admins | `/admin` | Verification, users, bookings & disputes, refunds, payouts, ledger, commissions, categories, promotions, countries, settings, roles, audit log |
+
+**Stack:** Next.js 15 (App Router, server actions) · TypeScript · Tailwind CSS v4 · PostgreSQL · Prisma · Zod · Vitest · Playwright.
+It's a modular monolith: business logic lives in `src/server/modules/*`, separate from the UI, so mobile apps can call the same services (see `src/app/api/v1`).
+
+## Quick start (local)
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+cp .env.example .env          # then fill DATABASE_URL, ENCRYPTION_KEY, APP_URL=http://localhost:3000
+npm install
+npm run db:migrate            # applies prisma/migrations (incl. constraints & triggers)
+SEED_ADMIN_EMAIL=you@example.com SEED_ADMIN_PASSWORD='ChangeMe123' SEED_DEMO=true npm run db:seed
+npm run dev                   # http://localhost:3000
+npm run worker                # second terminal: reminders, settlements, hold expiry, email/SMS delivery
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+For local payments without gateway keys, set `PAYMENTS_DEV_GATEWAY=true` and `DEV_GATEWAY_SECRET=anything`. This shows a clearly labelled **test checkout** that runs the real signed-webhook and verification path. It is impossible to enable when `NODE_ENV=production`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Demo accounts (development only, password `Password123`): `customer@demo.test`, `akua@demo.test` (instant booking), `kofi@demo.test`, `esi@demo.test` (approval mode).
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Tests
 
-## Learn More
+```bash
+npm test               # integration tests against a fresh, uniquely named Postgres database per run
+npm run test:e2e       # Playwright, against a running dev server with demo data (npm run dev)
+```
 
-To learn more about Next.js, take a look at the following resources:
+The integration suite covers concurrent double-booking (8 parallel attempts → exactly 1 wins), the DB exclusion constraint, idempotent booking creation, hold expiry, approval mode never charging, duplicate and forged webhooks, cross-user access, refunds and ledger reversal, settlement, concurrent withdrawals that can't overdraw, ledger immutability, encrypted payout details, commission precedence and snapshotting, and verified-only reviews.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Docs
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md): domains, booking state machine, payments, ledger, security model
+- [`docs/DEPLOYMENT.md`](docs/DEPLOYMENT.md): hosting, environment variables, Hostinger DNS, gateways, email/SMS, storage, backups, monitoring

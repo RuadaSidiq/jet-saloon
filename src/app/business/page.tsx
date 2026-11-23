@@ -43,7 +43,7 @@ export default async function BusinessHome({ searchParams }: { searchParams: Pro
         <Stat label="Completed" value={o.completed} sub={`${o.total} total · ${o.cancelled} cancelled`} />
         <Stat label="Available balance" value={bal ? money(bal.available, cur) : "—"} sub={bal ? `${money(bal.pending, cur)} pending` : undefined} />
         <Stat label="Average rating" value={o.ratingCount ? o.ratingAvg.toFixed(1) : "—"} sub={`${o.ratingCount} reviews`} />
-        <Stat label="Profile views (30 days)" value={o.views30} sub={o.conversion30 != null ? `${o.conversion30}% booked` : "No views yet"} />
+        <Stat label="Profile views (30 days)" value={o.views30} sub={o.conversion30 != null ? `${o.conversion30}% booking conversion` : "Conversion shown after 20 views"} />
       </div>
       <div className="mt-6 grid gap-6 lg:grid-cols-[1fr_380px]">
         <Card><BarChart title="Bookings received per day (last 30 days)" data={series.map((s) => ({ label: s.day.slice(5), value: s.bookings }))} /></Card>
