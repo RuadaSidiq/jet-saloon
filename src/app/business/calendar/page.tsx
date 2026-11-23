@@ -31,7 +31,7 @@ export default async function Calendar({ searchParams }: { searchParams: Promise
           const items = bookings.filter((b) => key(b.startsAt) === k);
           const off = timeOff.filter((t) => key(t.startsAt) <= k && key(new Date(t.endsAt.getTime() - 1)) >= k);
           return (
-            <section key={k} className={`min-h-40 glass rounded-(--radius-card) p-3 ${k === today ? "ring-2 ring-brand/50" : ""}`}>
+            <section key={k} className={`min-h-40 glass rounded-3xl p-3 ${k === today ? "ring-2 ring-brand/50" : ""}`}>
               <h2 className="text-xs font-semibold uppercase tracking-wide text-muted">{formatInTimeZone(d, tz, "EEE d MMM")}</h2>
               <ul className="mt-2 space-y-2">
                 {off.map((t) => <li key={t.id} className="rounded-xl bg-slate-100 px-2 py-1 text-xs text-slate-600">Time off · {t.staff.name}{t.reason && ` — ${t.reason}`}</li>)}

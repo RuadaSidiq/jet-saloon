@@ -10,6 +10,7 @@ const securityHeaders = [
 
 const nextConfig: NextConfig = {
   poweredByHeader: false,
+  devIndicators: false, // hide the Next.js dev badge (development only)
   experimental: { serverActions: { bodySizeLimit: "60mb" } }, // portfolio videos; files are validated server-side
   async headers() {
     return [{ source: "/(.*)", headers: securityHeaders }];

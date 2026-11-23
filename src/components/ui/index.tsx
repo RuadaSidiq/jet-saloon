@@ -40,7 +40,7 @@ export function Check({ label, ...p }: { label: React.ReactNode } & React.InputH
 
 export function Card({ className, children, title, action }: { className?: string; children: React.ReactNode; title?: React.ReactNode; action?: React.ReactNode }) {
   return (
-    <section className={cn("glass rounded-(--radius-card)", className)}>
+    <section className={cn("glass rounded-3xl", className)}>
       {title && <header className="flex items-center justify-between gap-3 border-b border-white/60 px-5 py-3.5"><h2 className="text-sm font-semibold">{title}</h2>{action}</header>}
       <div className="p-5">{children}</div>
     </section>
@@ -74,7 +74,7 @@ export function PageHeader({ title, description, actions }: { title: string; des
 
 export function Stat({ label, value, sub }: { label: string; value: React.ReactNode; sub?: React.ReactNode }) {
   return (
-    <div className="glass rounded-(--radius-card) px-4 py-3.5">
+    <div className="glass rounded-3xl px-4 py-3.5">
       <div className="text-xs font-medium text-muted">{label}</div>
       <div className="tabular mt-1 text-xl font-semibold">{value}</div>
       {sub && <div className="mt-0.5 text-xs text-muted">{sub}</div>}
@@ -84,7 +84,7 @@ export function Stat({ label, value, sub }: { label: string; value: React.ReactN
 
 export function Empty({ title, body, action }: { title: string; body?: string; action?: React.ReactNode }) {
   return (
-    <div className="glass rounded-(--radius-card) border-dashed px-6 py-10 text-center">
+    <div className="glass rounded-3xl border-dashed px-6 py-10 text-center">
       <p className="font-medium">{title}</p>
       {body && <p className="mx-auto mt-1 max-w-md text-sm text-muted">{body}</p>}
       {action && <div className="mt-4">{action}</div>}
@@ -95,7 +95,7 @@ export function Empty({ title, body, action }: { title: string; body?: string; a
 export function Table({ head, children, empty }: { head: React.ReactNode[]; children: React.ReactNode; empty?: React.ReactNode }) {
   const hasRows = Array.isArray(children) ? children.length > 0 : !!children;
   return (
-    <div className="overflow-x-auto glass rounded-(--radius-card)">
+    <div className="overflow-x-auto glass rounded-3xl">
       <table className="w-full min-w-[640px] text-left text-sm">
         <thead className="border-b border-white/60 bg-white/40 text-xs uppercase tracking-wide text-muted"><tr>{head.map((h, i) => <th key={i} className="px-4 py-2.5 font-medium">{h}</th>)}</tr></thead>
         <tbody className="divide-y divide-line [&_td]:px-4 [&_td]:py-3">{hasRows ? children : <tr><td colSpan={head.length} className="py-10 text-center text-muted">{empty ?? "Nothing here yet"}</td></tr>}</tbody>

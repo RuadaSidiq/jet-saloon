@@ -56,7 +56,7 @@ export function BookingWizard({ provider, services, currency, preselect, areas }
   return (
     <ActionForm action={createBookingAction} className="grid gap-6 lg:grid-cols-[1fr_320px]">
       <div className="space-y-6">
-        <section className="glass rounded-(--radius-card) p-5">
+        <section className="glass rounded-3xl p-5">
           <h2 className="font-semibold">1. Choose services</h2>
           <ul className="mt-4 space-y-2">
             {services.map((s) => (
@@ -71,7 +71,7 @@ export function BookingWizard({ provider, services, currency, preselect, areas }
           </ul>
         </section>
 
-        <section className="glass rounded-(--radius-card) p-5">
+        <section className="glass rounded-3xl p-5">
           <h2 className="font-semibold">2. Where?</h2>
           <div className="mt-4 flex flex-wrap gap-2">
             {provider.offersStudio && <button type="button" onClick={() => setLocation("STUDIO")} className={cn("rounded-2xl border px-4 py-2 text-sm", location === "STUDIO" ? "border-brand bg-brand-soft text-brand-dark" : "border-line")}>At the studio</button>}
@@ -87,7 +87,7 @@ export function BookingWizard({ provider, services, currency, preselect, areas }
           )}
         </section>
 
-        <section className="glass rounded-(--radius-card) p-5">
+        <section className="glass rounded-3xl p-5">
           <h2 className="font-semibold">3. Pick a time</h2>
           <div className="-mx-1 mt-4 flex gap-2 overflow-x-auto px-1 pb-2">
             {days.map((d) => (
@@ -108,7 +108,7 @@ export function BookingWizard({ provider, services, currency, preselect, areas }
           <p className="mt-3 text-xs text-muted">Times are local to the professional ({provider.timezone.replace("_", " ")}).</p>
         </section>
 
-        <section className="glass rounded-(--radius-card) p-5">
+        <section className="glass rounded-3xl p-5">
           <h2 className="font-semibold">4. Anything else?</h2>
           <div className="mt-4 grid gap-3 sm:grid-cols-2">
             <Field label="Note for your professional (optional)" className="sm:col-span-2"><Textarea name="note" rows={3} maxLength={1000} /></Field>
@@ -117,7 +117,7 @@ export function BookingWizard({ provider, services, currency, preselect, areas }
         </section>
       </div>
 
-      <aside className="h-fit space-y-4 glass rounded-(--radius-card) p-5 lg:sticky lg:top-20">
+      <aside className="h-fit space-y-4 glass rounded-3xl p-5 lg:sticky lg:top-20">
         <h2 className="font-semibold">Summary</h2>
         <dl className="space-y-2 text-sm">
           {chosen.map((s) => <div key={s.id} className="flex justify-between gap-2"><dt>{s.name}</dt><dd className="tabular">{money(s.promoPriceMinor ?? s.priceMinor, currency)}</dd></div>)}
