@@ -1,9 +1,8 @@
 import Link from "next/link";
 import type { ProviderCard as P } from "@/server/modules/search";
 import { money } from "@/lib/format";
-import { Badge, Stars, btn } from "@/components/ui";
+import { Badge, btn } from "@/components/ui";
 
-const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
 export function ProviderCard({ p }: { p: P }) {
   return (
@@ -15,30 +14,17 @@ export function ProviderCard({ p }: { p: P }) {
         ) : (
           <div className="grid h-full place-items-center text-3xl font-semibold text-brand/40">{p.businessName.slice(0, 1)}</div>
         )}
-        {p.sample ? <span className="absolute left-3 top-3"><Badge>Sample profile</Badge></span> : p.featured && <span className="absolute left-3 top-3"><Badge tone="brand">Featured</Badge></span>}
+        <span className="absolute left-3 top-3">{p.sample ? <Badge>Sample</Badge> : p.featured ? <Badge tone="brand">Featured</Badge> : <Badge tone="ok">✓ Verified</Badge>}</span>
       </Link>
-      <div className="flex flex-1 flex-col p-4">
-        <div className="flex items-start gap-3">
-          {p.avatarUrl ? (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img src={p.avatarUrl} alt="" className="size-10 shrink-0 rounded-full object-cover" />
-          ) : <div className="grid size-10 shrink-0 place-items-center rounded-full bg-brand-soft text-sm font-semibold text-brand">{p.displayName.slice(0, 1)}</div>}
-          <div className="min-w-0">
-            <h3 className="truncate font-semibold"><Link href={`/provider/${p.slug}`} className="hover:text-brand">{p.businessName}</Link></h3>
-            {p.sample ? <p className="text-xs text-muted">Sample listing</p> : <p className="flex items-center gap-1 text-xs text-ok"><span aria-hidden>✓</span> Verified professional</p>}
-          </div>
+      <div className="flex flex-1 flex-col gap-1 p-4">
+        <div className="flex items-center justify-between gap-2">
+          <h3 className="min-w-0 truncate font-semibold"><Link href={`/provider/${p.slug}`} className="hover:text-brand">{p.businessName}</Link></h3>
+          {p.ratingCount > 0 && <span className="flex shrink-0 items-center gap-1 text-sm"><span className="text-amber-500" aria-hidden>★</span><span className="tabular font-medium">{p.ratingAvg.toFixed(1)}</span></span>}
         </div>
-        <p className="mt-3 text-sm text-muted">{p.categories.slice(0, 2).join(" · ")}{p.location && ` — ${p.location}`}</p>
-        <div className="mt-2 flex items-center gap-2 text-sm">
-          {p.ratingCount > 0 ? <><Stars value={p.ratingAvg} /><span className="tabular">{p.ratingAvg.toFixed(1)}</span><span className="text-muted">({p.ratingCount})</span></> : <span className="text-muted">New on Muv</span>}
-        </div>
-        <p className="mt-1 text-xs text-muted">{p.openDays.length ? `Open ${p.openDays.map((d) => DAYS[d]).join(", ")}` : "Availability on profile"}{p.offersHome && " · Home service"}</p>
-        <div className="mt-auto flex items-end justify-between gap-2 pt-4">
-          <div className="text-sm">{p.fromPriceMinor != null && <><span className="text-muted">From </span><span className="tabular font-semibold">{money(p.fromPriceMinor, p.currency)}</span></>}</div>
-          <div className="flex gap-2">
-            <Link href={`/provider/${p.slug}`} className={btn({ variant: "secondary", size: "sm" })}>Profile</Link>
-            {!p.sample && <Link href={`/book/${p.slug}`} className={btn({ size: "sm" })}>Book now</Link>}
-          </div>
+        <p className="truncate text-sm text-muted">{[p.categories[0], p.location.split(", ").pop()].filter(Boolean).join(" · ")}</p>
+        <div className="mt-auto flex items-center justify-between gap-2 pt-3">
+          <p className="text-sm">{p.fromPriceMinor != null && <><span className="text-muted">From </span><span className="tabular font-semibold">{money(p.fromPriceMinor, p.currency)}</span></>}</p>
+          <Link href={p.sample ? `/provider/${p.slug}` : `/book/${p.slug}`} className={btn({ variant: p.sample ? "secondary" : "primary", size: "sm" })}>{p.sample ? "View" : "Book"}</Link>
         </div>
       </div>
     </article>
