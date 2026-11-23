@@ -15,7 +15,7 @@
     "test:e2e": "playwright test --trace off",
     "typecheck": "tsc --noEmit",
     "postinstall": "prisma generate",
-    "vercel-build": "prisma generate && prisma migrate deploy && tsx prisma/seed.ts && tsx prisma/sample-providers.ts && next build"
+    "vercel-build": "prisma generate && prisma migrate deploy && tsx prisma/seed.ts && tsx prisma/admin-bootstrap.ts && tsx prisma/sample-providers.ts && next build"
   },
   "dependencies": {
     "@prisma/client": "^6.19.3",

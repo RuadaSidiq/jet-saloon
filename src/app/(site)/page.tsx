@@ -73,12 +73,20 @@ export default async function Home() {
           {categories.map((c) => {
             const img = c.imageUrl ?? (CATEGORY_PHOTOS.has(c.slug) ? `/images/categories/${c.slug}.jpg` : null);
             return (
-              <Link key={c.id} href={`/search?category=${c.slug}`} className="group relative block aspect-[4/3] overflow-hidden rounded-3xl bg-brand-soft shadow-[0_10px_30px_-18px_rgba(18,61,117,.45)]">
-                {img && (
-                  // eslint-disable-next-line @next/next/no-img-element
-                  <img src={img} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-[1.04]" />
-                )}
-                <span className="glass absolute bottom-3 left-3 right-3 truncate rounded-2xl px-3.5 py-2 text-sm font-semibold text-ink sm:right-auto">{c.name}</span>
+              <Link key={c.id} href={`/search?category=${c.slug}`} className="glass glass-hover group flex flex-col rounded-3xl p-2.5">
+                <span className="relative block aspect-[4/3] overflow-hidden rounded-2xl bg-brand-soft">
+                  {img && (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={img} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-[1.04]" />
+                  )}
+                </span>
+                <span className="px-2 pb-1.5 pt-3">
+                  <span className="flex items-center justify-between gap-2">
+                    <span className="truncate font-semibold text-ink group-hover:text-brand">{c.name}</span>
+                    <ArrowRight className="size-4 shrink-0 text-muted transition group-hover:translate-x-0.5 group-hover:text-brand" />
+                  </span>
+                  {c.children.length > 0 && <span className="mt-0.5 block truncate text-xs text-muted">{c.children.slice(0, 2).map((x) => x.name).join(" · ")}</span>}
+                </span>
               </Link>
             );
           })}
