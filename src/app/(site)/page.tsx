@@ -1,4 +1,6 @@
 import Link from "next/link";
+import { existsSync } from "fs";
+import path from "path";
 import { ArrowRight, BadgeCheck, CalendarClock, MapPin, Search, ShieldCheck, Smartphone, Sparkles, Star, Wallet } from "lucide-react";
 import { db } from "@/server/db";
 import { searchProviders } from "@/server/modules/search";
@@ -9,6 +11,9 @@ import { CategoryIcon } from "@/components/site/category-icon";
 import { Stars, btn } from "@/components/ui";
 
 export const dynamic = "force-dynamic";
+
+// Drop a photo at public/brand/hero.jpg to use it as the default hero image.
+const HERO_FALLBACK = existsSync(path.join(process.cwd(), "public/brand/hero.jpg"));
 
 const FAQ = [
   ["How do I know a professional is trustworthy?", "Every professional on Jet Saloon is reviewed by our verification team before they can accept bookings. Reviews can only be left by customers who completed a booking."],
@@ -40,21 +45,19 @@ export default async function Home() {
         <div className="relative mx-auto grid max-w-7xl items-center gap-14 px-4 pb-16 pt-12 sm:px-6 lg:grid-cols-[1.05fr_1fr] lg:pb-24 lg:pt-16">
           <div>
             <p className="glass inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-medium text-brand-dark">
-              <BadgeCheck className="size-4 text-brand" /> Every professional is verified
+              <BadgeCheck className="size-4 text-brand" /> Verified professionals
             </p>
             <h1 className="mt-6 text-4xl font-semibold leading-[1.08] tracking-tight text-ink sm:text-5xl lg:text-[3.6rem]">
-              Look your best.{" "}
-              <span className="bg-gradient-to-r from-brand via-[#3d8be6] to-brand-dark bg-clip-text text-transparent">Book trusted beauty pros</span>{" "}
-              near you.
+              Beauty, <span className="bg-gradient-to-r from-brand via-[#3d8be6] to-brand-dark bg-clip-text text-transparent">booked.</span>
             </h1>
-            <p className="mt-5 max-w-xl text-lg leading-relaxed text-muted">Makeup artists, barbers, braiders, nail and lash technicians across Ghana — see their work, pick a real open time, and pay securely with Mobile Money or card.</p>
+            <p className="mt-4 max-w-md text-lg text-muted">Trusted beauty pros near you.</p>
 
             <form action="/search" className="glass mt-8 rounded-[28px] p-2 shadow-[0_20px_50px_-24px_rgba(18,61,117,.45)]">
               <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
                 <label className="flex flex-1 items-center gap-3 px-3">
                   <Search className="size-5 shrink-0 text-muted" aria-hidden />
                   <span className="sr-only">What are you looking for?</span>
-                  <input name="q" placeholder="Service or professional, e.g. bridal makeup" className="h-12 w-full bg-transparent text-[15px] placeholder:text-muted/80 focus:outline-none" />
+                  <input name="q" placeholder="Search a service" className="h-12 w-full bg-transparent text-[15px] placeholder:text-muted/80 focus:outline-none" />
                 </label>
                 <label className="flex items-center gap-2 rounded-2xl bg-white/70 px-3 sm:w-48">
                   <MapPin className="size-5 shrink-0 text-muted" aria-hidden />
@@ -67,25 +70,14 @@ export default async function Home() {
                 <button className={btn({ size: "lg", className: "h-12 px-7" })}>Search</button>
               </div>
             </form>
-            <div className="mt-4 flex flex-wrap gap-2 text-sm">
-              {["Bridal makeup", "Barber in Accra", "Lash technician in East Legon", "Braiding", "Nails in Kumasi"].map((q) => (
-                <Link key={q} href={`/search?q=${encodeURIComponent(q)}`} className="rounded-full border border-white/80 bg-white/55 px-3.5 py-1.5 text-muted backdrop-blur-md transition hover:bg-white hover:text-brand">{q}</Link>
-              ))}
-            </div>
-
-            <ul className="mt-10 grid max-w-xl grid-cols-1 gap-4 text-sm sm:grid-cols-3">
-              {[[ShieldCheck, "Verified pros", "ID-checked by our team"], [Smartphone, "MoMo & card", "Secure checkout"], [CalendarClock, "Free cancellation", "Within each policy"]].map(([Icon, t, s]) => {
+            <ul className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm font-medium text-ink">
+              {[[ShieldCheck, "Verified pros"], [Smartphone, "MoMo & card"], [CalendarClock, "Free cancellation"]].map(([Icon, t]) => {
                 const I = Icon as typeof ShieldCheck;
-                return (
-                  <li key={t as string} className="flex items-center gap-3">
-                    <span className="grid size-10 shrink-0 place-items-center rounded-2xl bg-white/80 text-brand shadow-[0_6px_16px_-10px_rgba(18,61,117,.5)]"><I className="size-5" strokeWidth={1.8} /></span>
-                    <span><span className="block font-semibold text-ink">{t as string}</span><span className="text-muted">{s as string}</span></span>
-                  </li>
-                );
+                return <li key={t as string} className="flex items-center gap-2"><I className="size-4 text-brand" strokeWidth={2} />{t as string}</li>;
               })}
             </ul>
           </div>
-          <HeroVisual imageUrl={banner?.imageUrl} />
+          <HeroVisual imageUrl={banner?.imageUrl ?? (HERO_FALLBACK ? "/brand/hero.jpg" : null)} />
         </div>
       </section>
 

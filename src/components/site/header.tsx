@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { Logo as BrandLogo } from "@/components/brand/logo";
 import { currentUser } from "@/server/auth/session";
 import { db } from "@/server/db";
 import { logoutAction } from "@/app/actions/auth";
@@ -6,9 +7,8 @@ import { btn } from "@/components/ui";
 
 export function Logo({ light = false }: { light?: boolean }) {
   return (
-    <Link href="/" className="flex items-center gap-2 font-semibold tracking-tight" aria-label="Jet Saloon home">
-      <span className={`grid size-9 place-items-center rounded-2xl text-sm font-bold ${light ? "bg-white/90 text-brand" : "bg-gradient-to-br from-brand-mid to-brand-dark text-white shadow-[0_6px_16px_-6px_rgba(23,105,210,.7)]"}`}>JS</span>
-      <span className={light ? "text-white" : "text-ink"}>Jet Saloon</span>
+    <Link href="/" aria-label="Jet Saloon home">
+      <BrandLogo light={light} />
     </Link>
   );
 }
