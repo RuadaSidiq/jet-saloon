@@ -19,7 +19,7 @@ export function Reschedule({ bookingRef, providerId, serviceIds, timezone, as }:
         <input type="hidden" name="ref" value={bookingRef} /><input type="hidden" name="as" value={as} /><input type="hidden" name="startsAt" value={slot} />
         <label className="text-sm font-medium">Move to a new time</label>
         <Input type="date" value={date} onChange={(e) => { setDate(e.target.value); setSlot(""); }} className="mt-1.5" />
-        {date && <div className="mt-2 flex flex-wrap gap-1.5">{slots.length ? slots.map((s) => <button type="button" key={s.startsAt} onClick={() => setSlot(s.startsAt)} className={`tabular rounded border px-2 py-1 text-xs ${slot === s.startsAt ? "border-brand bg-brand text-white" : "border-line"}`}>{fmt.format(new Date(s.startsAt))}</button>) : <span className="text-xs text-muted">No openings that day</span>}</div>}
+        {date && <div className="mt-2 flex flex-wrap gap-1.5">{slots.length ? slots.map((s) => <button type="button" key={s.startsAt} onClick={() => setSlot(s.startsAt)} className={`tabular rounded-xl border px-2 py-1 text-xs ${slot === s.startsAt ? "border-brand bg-brand text-white" : "border-line"}`}>{fmt.format(new Date(s.startsAt))}</button>) : <span className="text-xs text-muted">No openings that day</span>}</div>}
         <div className="mt-3"><Submit size="sm">Confirm new time</Submit></div>
       </ActionForm>
       <ActionForm action={rescheduleRequestAction} resetOnSuccess>

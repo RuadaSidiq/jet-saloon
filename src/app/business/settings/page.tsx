@@ -20,7 +20,7 @@ export default async function BookingSettings() {
         ]} />
       </Card>
       {p.offersHome && <Card title="Home-service areas & travel fees">
-        {areas.length > 0 && <ul className="mb-4 space-y-2 text-sm">{areas.map((a) => <li key={a.id} className="flex items-center justify-between rounded border border-line px-3 py-2"><span>{a.city.name} · travel fee {money(a.travelFeeMinor, cur)}</span><Act action={serviceAreaAction} fields={{ delete: a.id }} label="Remove" variant="ghost" /></li>)}</ul>}
+        {areas.length > 0 && <ul className="mb-4 space-y-2 text-sm">{areas.map((a) => <li key={a.id} className="flex items-center justify-between rounded-xl border border-line px-3 py-2"><span>{a.city.name} · travel fee {money(a.travelFeeMinor, cur)}</span><Act action={serviceAreaAction} fields={{ delete: a.id }} label="Remove" variant="ghost" /></li>)}</ul>}
         <QuickForm action={serviceAreaAction} resetOnSuccess submit="Add area" fields={[{ name: "cityId", label: "City", type: "select", options: cities.map((c) => [c.id, c.name]) }, { name: "fee", label: "Travel fee", placeholder: "0" }]} />
         <p className="mt-3 text-xs text-muted">If you list areas, home bookings are only accepted in those cities.</p>
       </Card>}

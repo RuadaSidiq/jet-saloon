@@ -8,7 +8,7 @@ export async function SiteFooter() {
     db.city.findMany({ where: { active: true, country: { active: true } }, take: 6, orderBy: { name: "asc" } }),
   ]);
   return (
-    <footer className="mt-20 bg-brand-dark text-sm text-white/80">
+    <footer className="mt-20 rounded-t-[32px] bg-gradient-to-br from-brand-dark to-[#0f3264] text-sm text-white/80">
       <div className="mx-auto grid max-w-7xl gap-10 px-4 py-12 sm:grid-cols-2 sm:px-6 lg:grid-cols-5">
         <div className="lg:col-span-2">
           <Logo light />

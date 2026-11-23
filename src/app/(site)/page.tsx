@@ -36,12 +36,12 @@ export default async function Home() {
             <p className="text-sm font-medium text-brand">Verified beauty professionals</p>
             <h1 className="mt-3 max-w-xl text-3xl font-semibold leading-tight tracking-tight text-ink sm:text-[2.6rem]">Book the beauty professional you can trust.</h1>
             <p className="mt-4 max-w-lg text-muted">Makeup artists, barbers, stylists, nail and lash technicians — compare real work, see live availability and pay securely.</p>
-            <form action="/search" className="mt-8 rounded-(--radius-card) border border-line bg-white p-2 shadow-[0_8px_30px_-18px_rgba(18,61,117,.45)]">
+            <form action="/search" className="mt-8 glass-strong glass rounded-(--radius-card) p-2">
               <div className="flex flex-col gap-2 sm:flex-row">
                 <label className="sr-only" htmlFor="hq">What are you looking for?</label>
-                <input id="hq" name="q" placeholder="e.g. bridal makeup, barber, lash technician" className="h-12 flex-1 rounded-md px-3 text-sm focus:outline-none" />
+                <input id="hq" name="q" placeholder="e.g. bridal makeup, barber, lash technician" className="h-12 flex-1 rounded-2xl px-3 text-sm focus:outline-none" />
                 <label className="sr-only" htmlFor="hcity">City</label>
-                <select id="hcity" name="city" className="h-12 rounded-md border border-line bg-white px-3 text-sm sm:w-44">
+                <select id="hcity" name="city" className="h-12 rounded-2xl border border-[#c3d5ee] bg-white/80 px-3 text-sm sm:w-44">
                   <option value="">Any city</option>
                   {cities.map((c) => <option key={c.id} value={c.slug}>{c.name}</option>)}
                 </select>
@@ -50,7 +50,7 @@ export default async function Home() {
             </form>
             <div className="mt-4 flex flex-wrap gap-2 text-sm">
               {["Bridal makeup", "Barber in Accra", "Lash technician in East Legon", "Nail technician in Kumasi", "Braiding"].map((q) => (
-                <Link key={q} href={`/search?q=${encodeURIComponent(q)}`} className="rounded-full border border-line bg-white px-3 py-1 text-muted hover:border-brand-mid hover:text-brand">{q}</Link>
+                <Link key={q} href={`/search?q=${encodeURIComponent(q)}`} className="rounded-full border border-white/80 bg-white/55 px-3 py-1 text-muted backdrop-blur-md hover:bg-white/85 hover:text-brand">{q}</Link>
               ))}
             </div>
           </div>
@@ -61,11 +61,11 @@ export default async function Home() {
               <div className="relative flex h-full flex-col justify-end bg-gradient-to-t from-brand-dark/90 to-transparent p-8 text-white">
                 <p className="text-lg font-semibold">{banner.title}</p>
                 {banner.subtitle && <p className="mt-1 text-sm text-white/85">{banner.subtitle}</p>}
-                {banner.linkUrl && <Link href={banner.linkUrl} className="mt-4 self-start rounded-md bg-white px-4 py-2 text-sm font-medium text-brand-dark">Learn more</Link>}
+                {banner.linkUrl && <Link href={banner.linkUrl} className="mt-4 self-start rounded-2xl bg-white px-4 py-2 text-sm font-medium text-brand-dark">Learn more</Link>}
               </div>
             </div>
           ) : (
-            <div className="hidden self-center rounded-(--radius-card) border border-line bg-white p-8 lg:block">
+            <div className="hidden self-center glass rounded-(--radius-card) p-8 lg:block">
               <p className="font-semibold">{banner?.title ?? "Why customers book with Jet Saloon"}</p>
               <ul className="mt-5 space-y-4 text-sm">
                 {[["Verified professionals", "Every professional is reviewed by our team before they can take bookings."], ["Real-time availability", "Only genuinely open slots are shown — no back-and-forth."], ["Secure payment", "Pay with Mobile Money or card. Free cancellation within each professional's policy."], ["Honest reviews", "Only customers who completed an appointment can leave a review."]].map(([t, b]) => (
@@ -81,10 +81,10 @@ export default async function Home() {
         <div className="flex items-end justify-between"><h2 className="text-xl font-semibold">Browse by service</h2><Link href="/search" className="text-sm text-brand">All services</Link></div>
         <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
           {categories.map((c) => (
-            <Link key={c.id} href={`/search?category=${c.slug}`} className="group rounded-(--radius-card) border border-line bg-white p-4 hover:border-brand-mid">
+            <Link key={c.id} href={`/search?category=${c.slug}`} className="group glass glass-hover rounded-(--radius-card) p-4">
               {c.imageUrl && (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={c.imageUrl} alt="" className="mb-3 aspect-[3/2] w-full rounded-md object-cover" />
+                <img src={c.imageUrl} alt="" className="mb-3 aspect-[3/2] w-full rounded-2xl object-cover" />
               )}
               <p className="font-medium group-hover:text-brand">{c.name}</p>
               {c.children.length > 0 && <p className="mt-1 line-clamp-1 text-xs text-muted">{c.children.map((s) => s.name).join(", ")}</p>}
@@ -100,7 +100,7 @@ export default async function Home() {
       {popular.length > 0 && (
         <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6">
           <h2 className="text-xl font-semibold">Popular services</h2>
-          <div className="mt-5 flex flex-wrap gap-2">{popular.map((p) => <Link key={p.nameSnapshot} href={`/search?q=${encodeURIComponent(p.nameSnapshot)}`} className="rounded-md border border-line bg-white px-4 py-2 text-sm hover:border-brand-mid hover:text-brand">{p.nameSnapshot}</Link>)}</div>
+          <div className="mt-5 flex flex-wrap gap-2">{popular.map((p) => <Link key={p.nameSnapshot} href={`/search?q=${encodeURIComponent(p.nameSnapshot)}`} className="glass glass-hover rounded-full px-4 py-2 text-sm hover:text-brand">{p.nameSnapshot}</Link>)}</div>
         </section>
       )}
 
@@ -120,7 +120,7 @@ export default async function Home() {
           <h2 className="text-xl font-semibold">What customers say</h2>
           <div className="mt-6 grid gap-4 md:grid-cols-3">
             {testimonials.map((t) => (
-              <figure key={t.id} className="rounded-(--radius-card) border border-line bg-white p-5">
+              <figure key={t.id} className="glass rounded-(--radius-card) p-5">
                 <Stars value={t.rating} />
                 <blockquote className="mt-3 text-sm leading-relaxed">“{t.comment}”</blockquote>
                 <figcaption className="mt-4 text-xs text-muted">{t.customer.name.split(" ")[0]} · booked <Link href={`/provider/${t.provider.slug}`} className="text-brand">{t.provider.businessName}</Link></figcaption>
@@ -131,18 +131,19 @@ export default async function Home() {
       )}
 
       <section className="mx-auto max-w-7xl px-4 py-14 sm:px-6">
-        <div className="grid items-center gap-8 rounded-(--radius-card) bg-brand px-6 py-10 text-white sm:px-10 lg:grid-cols-[1.4fr_1fr]">
+        <div className="relative grid items-center gap-8 overflow-hidden rounded-(--radius-card) bg-gradient-to-br from-brand via-[#1f74da] to-brand-dark px-6 py-10 text-white shadow-[0_24px_60px_-28px_rgba(18,61,117,.7)] sm:px-10 lg:grid-cols-[1.4fr_1fr]">
+          <div aria-hidden className="pointer-events-none absolute -right-16 -top-20 size-72 rounded-full bg-white/15 blur-3xl" />
           <div>
             <h2 className="text-2xl font-semibold">Are you a beauty professional?</h2>
             <p className="mt-2 max-w-lg text-white/85">Join free. Get discovered by new clients, manage your calendar, take secure payments and get paid to Mobile Money or your bank.</p>
           </div>
-          <div className="lg:text-right"><Link href="/become-a-provider" className="inline-flex h-12 items-center rounded-md bg-white px-6 font-medium text-brand-dark hover:bg-brand-soft">Become a provider</Link></div>
+          <div className="lg:text-right"><Link href="/become-a-provider" className="relative inline-flex h-12 items-center rounded-full bg-white/90 px-6 font-medium text-brand-dark shadow-lg backdrop-blur hover:bg-white">Become a provider</Link></div>
         </div>
       </section>
 
       <section className="mx-auto grid max-w-7xl gap-10 px-4 py-6 sm:px-6 lg:grid-cols-[1fr_1.3fr]">
         <h2 className="text-xl font-semibold">Frequently asked questions</h2>
-        <div className="divide-y divide-line rounded-(--radius-card) border border-line">
+        <div className="glass divide-y divide-white/60 rounded-(--radius-card)">
           {FAQ.map(([q, a]) => (
             <details key={q} className="group px-5 py-4"><summary className="cursor-pointer list-none font-medium marker:hidden">{q}</summary><p className="mt-2 text-sm text-muted">{a}</p></details>
           ))}
@@ -150,7 +151,7 @@ export default async function Home() {
       </section>
 
       <section className="mx-auto mt-14 max-w-7xl px-4 sm:px-6">
-        <div className="grid gap-6 rounded-(--radius-card) border border-line bg-canvas p-8 md:grid-cols-2">
+        <div className="grid gap-6 glass rounded-(--radius-card) p-8 md:grid-cols-2">
           <div>
             <h2 className="font-semibold">Mobile apps are on the way</h2>
             <p className="mt-1 text-sm text-muted">Jet Saloon for Android and iOS is in development. Subscribe and we&apos;ll tell you the day it launches — plus occasional offers.</p>

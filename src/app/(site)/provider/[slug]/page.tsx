@@ -76,9 +76,9 @@ export default async function ProviderPage({ params }: { params: Promise<{ slug:
             <Card title="Portfolio">
               <div className="grid grid-cols-2 gap-2 sm:grid-cols-3">
                 {p.portfolio.map((m) => m.mediaType === "VIDEO"
-                  ? <video key={m.id} src={m.url} controls className="aspect-square w-full rounded-md bg-black object-cover" />
+                  ? <video key={m.id} src={m.url} controls className="aspect-square w-full rounded-2xl bg-black object-cover" />
                   // eslint-disable-next-line @next/next/no-img-element
-                  : <img key={m.id} src={m.url} alt={m.caption ?? `Work by ${p.businessName}`} className="aspect-square w-full rounded-md object-cover" loading="lazy" />)}
+                  : <img key={m.id} src={m.url} alt={m.caption ?? `Work by ${p.businessName}`} className="aspect-square w-full rounded-2xl object-cover" loading="lazy" />)}
               </div>
             </Card>
           )}

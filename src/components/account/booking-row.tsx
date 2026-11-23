@@ -6,7 +6,7 @@ import { StatusBadge } from "@/components/ui";
 export function BookingRow({ b, href }: { b: Booking & { items: BookingItem[] }; href: string }) {
   return (
     <li>
-      <Link href={href} className="flex flex-col gap-1 rounded-md border border-line bg-white p-4 hover:border-brand-mid sm:flex-row sm:items-center sm:gap-4">
+      <Link href={href} className="flex flex-col gap-1 glass glass-hover rounded-2xl p-4 sm:flex-row sm:items-center sm:gap-4">
         <div className="flex-1">
           <p className="font-medium">{b.items.map((i) => i.nameSnapshot).join(", ")}</p>
           <p className="text-sm text-muted">{b.providerNameSnapshot} · {dt(b.startsAt, b.timezone)}</p>

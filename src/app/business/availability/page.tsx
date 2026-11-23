@@ -18,7 +18,7 @@ export default async function Availability() {
             <HoursForm staffId={s.id} hours={s.workingHours} />
             <div className="mt-6 border-t border-line pt-5">
               <h3 className="text-sm font-semibold">Holidays & blocked time</h3>
-              {s.timeOff.length > 0 && <ul className="mt-3 space-y-2 text-sm">{s.timeOff.map((t) => <li key={t.id} className="flex items-center justify-between rounded border border-line px-3 py-2"><span>{dt(t.startsAt, p.timezone)} → {dt(t.endsAt, p.timezone)}{t.reason && <span className="text-muted"> · {t.reason}</span>}</span><Act action={timeOffAction} fields={{ delete: t.id }} label="Remove" variant="ghost" /></li>)}</ul>}
+              {s.timeOff.length > 0 && <ul className="mt-3 space-y-2 text-sm">{s.timeOff.map((t) => <li key={t.id} className="flex items-center justify-between rounded-xl border border-line px-3 py-2"><span>{dt(t.startsAt, p.timezone)} → {dt(t.endsAt, p.timezone)}{t.reason && <span className="text-muted"> · {t.reason}</span>}</span><Act action={timeOffAction} fields={{ delete: t.id }} label="Remove" variant="ghost" /></li>)}</ul>}
               <div className="mt-4"><QuickForm action={timeOffAction} hidden={{ staffId: s.id }} resetOnSuccess submit="Block this time" columns={3} fields={[
                 { name: "from", label: "From date", type: "date", required: true }, { name: "fromTime", label: "From time", placeholder: "00:00", hint: "Leave blank for whole day" }, { name: "to", label: "To date", type: "date", required: true },
                 { name: "toTime", label: "To time", placeholder: "23:59" }, { name: "reason", label: "Reason (private)", placeholder: "Holiday" },

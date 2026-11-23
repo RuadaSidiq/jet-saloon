@@ -31,7 +31,7 @@ export default async function SearchPage({ searchParams }: { searchParams: Promi
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6">
-      <form className="rounded-(--radius-card) border border-line bg-white p-3" action="/search">
+      <form className="glass rounded-(--radius-card) p-3" action="/search">
         <div className="flex flex-col gap-2 sm:flex-row">
           <input name="q" defaultValue={sp.q} placeholder="Service, professional or “lashes in East Legon”" className={inputCls + " h-11 flex-1"} aria-label="Search" />
           <button className={btn({ size: "lg" })}>Search</button>

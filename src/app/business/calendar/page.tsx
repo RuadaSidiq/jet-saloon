@@ -31,12 +31,12 @@ export default async function Calendar({ searchParams }: { searchParams: Promise
           const items = bookings.filter((b) => key(b.startsAt) === k);
           const off = timeOff.filter((t) => key(t.startsAt) <= k && key(new Date(t.endsAt.getTime() - 1)) >= k);
           return (
-            <section key={k} className={`min-h-40 rounded-(--radius-card) border bg-white p-3 ${k === today ? "border-brand" : "border-line"}`}>
+            <section key={k} className={`min-h-40 glass rounded-(--radius-card) p-3 ${k === today ? "ring-2 ring-brand/50" : ""}`}>
               <h2 className="text-xs font-semibold uppercase tracking-wide text-muted">{formatInTimeZone(d, tz, "EEE d MMM")}</h2>
               <ul className="mt-2 space-y-2">
-                {off.map((t) => <li key={t.id} className="rounded bg-slate-100 px-2 py-1 text-xs text-slate-600">Time off · {t.staff.name}{t.reason && ` — ${t.reason}`}</li>)}
+                {off.map((t) => <li key={t.id} className="rounded-xl bg-slate-100 px-2 py-1 text-xs text-slate-600">Time off · {t.staff.name}{t.reason && ` — ${t.reason}`}</li>)}
                 {items.map((b) => (
-                  <li key={b.id}><Link href={`/business/bookings/${b.reference}`} className="block rounded border border-line px-2 py-1.5 text-xs hover:border-brand-mid">
+                  <li key={b.id}><Link href={`/business/bookings/${b.reference}`} className="block rounded-xl border border-line px-2 py-1.5 text-xs hover:border-brand-mid">
                     <span className="tabular font-semibold">{formatInTimeZone(b.startsAt, tz, "HH:mm")}–{formatInTimeZone(b.endsAt, tz, "HH:mm")}</span>
                     <span className="block truncate">{b.customer.name}</span><span className="block truncate text-muted">{b.items.map((i) => i.nameSnapshot).join(", ")}</span>
                     <span className="mt-1 block"><StatusBadge status={b.status} /></span>

@@ -11,7 +11,7 @@ export default async function Receipt({ params }: { params: Promise<{ ref: strin
   if (!b || b.customerId !== user.id || !b.payments.length) notFound();
   const p = b.payments[0];
   return (
-    <div className="mx-auto max-w-xl rounded-(--radius-card) border border-line bg-white p-8 print:border-0">
+    <div className="mx-auto max-w-xl glass rounded-(--radius-card) p-8 print:border-0">
       <div className="flex items-start justify-between"><div><p className="text-lg font-semibold">Jet Saloon</p><p className="text-sm text-muted">Payment receipt</p></div><PrintButton /></div>
       <dl className="mt-6 grid grid-cols-2 gap-y-2 text-sm">
         <dt className="text-muted">Receipt for</dt><dd>{user.name}</dd>

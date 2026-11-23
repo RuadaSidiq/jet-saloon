@@ -32,8 +32,8 @@ export default async function Onboarding({ searchParams }: { searchParams: Promi
       <ol className="mb-6 flex gap-1 overflow-x-auto pb-1 text-sm" aria-label="Progress">
         {STEPS.map(([k, label], i) => (
           <li key={k} className="shrink-0">
-            {p ? <Link href={`?step=${k}`} className={cn("flex items-center gap-2 rounded-md px-3 py-2", k === step ? "bg-brand text-white" : "bg-white text-ink border border-line")}><span className="tabular text-xs opacity-75">{i + 1}</span>{label}</Link>
-              : <span className={cn("flex items-center gap-2 rounded-md border border-line px-3 py-2", i === 0 ? "bg-brand text-white" : "bg-white text-muted")}><span className="text-xs">{i + 1}</span>{label}</span>}
+            {p ? <Link href={`?step=${k}`} className={cn("flex items-center gap-2 rounded-2xl px-3 py-2", k === step ? "bg-brand text-white" : "bg-white text-ink border border-line")}><span className="tabular text-xs opacity-75">{i + 1}</span>{label}</Link>
+              : <span className={cn("flex items-center gap-2 rounded-2xl border border-line px-3 py-2", i === 0 ? "bg-brand text-white" : "bg-white text-muted")}><span className="text-xs">{i + 1}</span>{label}</span>}
           </li>
         ))}
       </ol>

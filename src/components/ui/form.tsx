@@ -25,8 +25,8 @@ export function ActionForm({ action, children, className, resetOnSuccess, redire
   return (
     <form id={id} ref={ref} action={run} className={className} onSubmit={(e) => { if (confirm && !window.confirm(confirm)) e.preventDefault(); }}>
       {children}
-      {state && !state.ok && <p role="alert" className="mt-3 rounded-md bg-bad-soft px-3 py-2 text-sm text-bad">{state.error}</p>}
-      {state?.ok && state.message && <p role="status" className="mt-3 rounded-md bg-ok-soft px-3 py-2 text-sm text-ok">{state.message}</p>}
+      {state && !state.ok && <p role="alert" className="mt-3 rounded-2xl bg-bad-soft px-3 py-2 text-sm text-bad">{state.error}</p>}
+      {state?.ok && state.message && <p role="status" className="mt-3 rounded-2xl bg-ok-soft px-3 py-2 text-sm text-ok">{state.message}</p>}
     </form>
   );
 }

@@ -38,7 +38,7 @@ export default async function ProviderDetail({ params }: { params: Promise<{ id:
           </Card>
           <Card title="Verification documents">
             {!canDocs ? <p className="text-sm text-muted">Your role does not include access to identity documents.</p> : p.documents.length === 0 ? <p className="text-sm text-muted">None uploaded.</p> : (
-              <ul className="space-y-2 text-sm">{p.documents.map((d) => <li key={d.id} className="flex items-center justify-between rounded border border-line px-3 py-2"><a href={`/api/files/document/${d.id}`} target="_blank" rel="noreferrer" className="text-brand">{d.type.replace(/_/g, " ").toLowerCase()} · {d.fileName}</a><span className="text-xs text-muted">{(d.sizeBytes / 1024).toFixed(0)} KB · {d.createdAt.toLocaleDateString("en-GB")}</span></li>)}</ul>
+              <ul className="space-y-2 text-sm">{p.documents.map((d) => <li key={d.id} className="flex items-center justify-between rounded-xl border border-line px-3 py-2"><a href={`/api/files/document/${d.id}`} target="_blank" rel="noreferrer" className="text-brand">{d.type.replace(/_/g, " ").toLowerCase()} · {d.fileName}</a><span className="text-xs text-muted">{(d.sizeBytes / 1024).toFixed(0)} KB · {d.createdAt.toLocaleDateString("en-GB")}</span></li>)}</ul>
             )}
             {canDocs && <p className="mt-3 text-xs text-muted">Every document view is recorded in the audit log.</p>}
           </Card>
@@ -46,7 +46,7 @@ export default async function ProviderDetail({ params }: { params: Promise<{ id:
             <div className="grid grid-cols-3 gap-2 sm:grid-cols-6">{p.portfolio.map((m) => (
               <div key={m.id} className="space-y-1">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                {m.mediaType === "VIDEO" ? <video src={m.url} className="aspect-square w-full rounded bg-black object-cover" /> : <img src={m.url} alt="" className={`aspect-square w-full rounded object-cover ${m.approved ? "" : "opacity-40"}`} />}
+                {m.mediaType === "VIDEO" ? <video src={m.url} className="aspect-square w-full rounded-xl bg-black object-cover" /> : <img src={m.url} alt="" className={`aspect-square w-full rounded-xl object-cover ${m.approved ? "" : "opacity-40"}`} />}
                 {canContent && <Act action={portfolioModerationAction} fields={{ id: m.id, approved: m.approved ? "false" : "true" }} label={m.approved ? "Hide" : "Show"} variant="ghost" />}
               </div>))}</div>
           </Card>

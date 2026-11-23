@@ -10,7 +10,7 @@ export function Messages({ bookingRef, me, messages }: { bookingRef: string; me:
         {messages.length === 0 && <li className="text-sm text-muted">No messages yet. Use this to share details about your appointment.</li>}
         {messages.map((m) => (
           <li key={m.id} className={m.sender.id === me ? "text-right" : ""}>
-            <div className={`inline-block max-w-[85%] rounded-lg px-3 py-2 text-left text-sm ${m.sender.id === me ? "bg-brand text-white" : "bg-canvas"}`}>{m.body}</div>
+            <div className={`inline-block max-w-[85%] rounded-xl px-3 py-2 text-left text-sm ${m.sender.id === me ? "bg-brand text-white" : "bg-canvas"}`}>{m.body}</div>
             <p className="mt-0.5 text-[11px] text-muted">{m.sender.id === me ? "You" : m.sender.name.split(" ")[0]} · {new Date(m.createdAt).toLocaleString("en-GB", { dateStyle: "short", timeStyle: "short" })}</p>
           </li>
         ))}

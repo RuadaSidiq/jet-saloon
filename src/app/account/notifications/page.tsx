@@ -12,7 +12,7 @@ export default async function Notifications() {
     <>
       <PageHeader title="Notifications" actions={items.some((n) => !n.readAt) && <Act action={markNotificationsReadAction} fields={{}} label="Mark all as read" />} />
       {items.length === 0 ? <Empty title="You're all caught up" /> : (
-        <ul className="divide-y divide-line rounded-(--radius-card) border border-line bg-white">
+        <ul className="divide-y divide-line glass rounded-(--radius-card)">
           {items.map((n) => (
             <li key={n.id} className={`flex gap-3 px-4 py-3 ${n.readAt ? "" : "bg-brand-soft/50"}`}>
               {!n.readAt && <span className="mt-2 size-2 shrink-0 rounded-full bg-brand" aria-label="Unread" />}

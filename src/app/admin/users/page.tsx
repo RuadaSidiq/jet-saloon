@@ -15,8 +15,8 @@ export default async function Users({ searchParams }: { searchParams: Promise<{ 
     <>
       <PageHeader title="Users" description={`${total} accounts`} />
       <SearchBar placeholder="Name, email or phone" defaultValue={sp.q}>
-        <select name="role" defaultValue={sp.role ?? ""} className="h-9 rounded-md border border-line px-2 text-sm"><option value="">All roles</option><option value="CUSTOMER">Customers</option><option value="PROVIDER">Providers</option><option value="ADMIN">Admins</option></select>
-        <select name="status" defaultValue={sp.status ?? ""} className="h-9 rounded-md border border-line px-2 text-sm"><option value="">Any status</option><option value="ACTIVE">Active</option><option value="SUSPENDED">Suspended</option></select>
+        <select name="role" defaultValue={sp.role ?? ""} className="h-9 rounded-2xl border border-line px-2 text-sm"><option value="">All roles</option><option value="CUSTOMER">Customers</option><option value="PROVIDER">Providers</option><option value="ADMIN">Admins</option></select>
+        <select name="status" defaultValue={sp.status ?? ""} className="h-9 rounded-2xl border border-line px-2 text-sm"><option value="">Any status</option><option value="ACTIVE">Active</option><option value="SUSPENDED">Suspended</option></select>
       </SearchBar>
       <Table head={["Name", "Email", "Role", "Bookings", "Verified", "Joined", "Status"]}>
         {users.map((u) => <tr key={u.id}><td><Link href={`/admin/users/${u.id}`} className="font-medium text-brand">{u.name}</Link></td><td>{u.email}</td><td>{u.role.toLowerCase()}{u.isSuperAdmin && " (super)"}</td><td className="tabular">{u._count.bookings}</td><td>{u.emailVerifiedAt ? "✓" : "—"}</td><td>{u.createdAt.toLocaleDateString("en-GB")}</td><td><StatusBadge status={u.status} /></td></tr>)}

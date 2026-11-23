@@ -27,7 +27,7 @@ export default async function Settings() {
           <p className="mt-4 text-xs text-muted">Email: {user.email} {user.emailVerifiedAt ? "(verified)" : "(not verified)"}</p>
         </Card>
         <Card title="Saved addresses">
-          {addresses.length > 0 && <ul className="mb-4 space-y-2 text-sm">{addresses.map((a) => <li key={a.id} className="flex items-center justify-between gap-2 rounded border border-line p-3"><span><span className="font-medium">{a.label}:</span> {a.line1}, {a.cityName}</span><Act action={addressAction} fields={{ delete: a.id }} label="Remove" variant="ghost" /></li>)}</ul>}
+          {addresses.length > 0 && <ul className="mb-4 space-y-2 text-sm">{addresses.map((a) => <li key={a.id} className="flex items-center justify-between gap-2 rounded-xl border border-line p-3"><span><span className="font-medium">{a.label}:</span> {a.line1}, {a.cityName}</span><Act action={addressAction} fields={{ delete: a.id }} label="Remove" variant="ghost" /></li>)}</ul>}
           <QuickForm action={addressAction} resetOnSuccess submit="Add address" columns={3} fields={[{ name: "label", label: "Label", placeholder: "Home" }, { name: "line1", label: "Address", required: true }, { name: "cityName", label: "City", required: true }]} />
         </Card>
         <Card title="Notifications & privacy">

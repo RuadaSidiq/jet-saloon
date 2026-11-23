@@ -23,12 +23,12 @@ export default async function DevCheckout({ params }: { params: Promise<{ ref: s
 
   return (
     <div className="grid min-h-dvh place-items-center bg-amber-50 p-4">
-      <form action={complete} className="w-full max-w-sm space-y-4 rounded-lg border-2 border-dashed border-amber-500 bg-white p-6">
-        <p className="rounded bg-amber-100 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-amber-800">Development test checkout — no real money</p>
+      <form action={complete} className="w-full max-w-sm space-y-4 rounded-xl border-2 border-dashed border-amber-500 bg-white p-6">
+        <p className="rounded-xl bg-amber-100 px-3 py-2 text-xs font-semibold uppercase tracking-wide text-amber-800">Development test checkout — no real money</p>
         <div><p className="text-sm text-muted">Booking {p.booking.reference}</p><p className="tabular text-2xl font-semibold">{money(p.amountMinor, p.currency)}</p></div>
         <div className="grid gap-2">
-          <button name="outcome" value="success" className="h-11 rounded-md bg-emerald-600 font-medium text-white">Simulate successful payment</button>
-          <button name="outcome" value="failed" className="h-11 rounded-md border border-red-300 font-medium text-red-700">Simulate failed payment</button>
+          <button name="outcome" value="success" className="h-11 rounded-2xl bg-emerald-600 font-medium text-white">Simulate successful payment</button>
+          <button name="outcome" value="failed" className="h-11 rounded-2xl border border-red-300 font-medium text-red-700">Simulate failed payment</button>
         </div>
       </form>
     </div>

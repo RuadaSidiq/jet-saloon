@@ -56,12 +56,12 @@ export function BookingWizard({ provider, services, currency, preselect, areas }
   return (
     <ActionForm action={createBookingAction} className="grid gap-6 lg:grid-cols-[1fr_320px]">
       <div className="space-y-6">
-        <section className="rounded-(--radius-card) border border-line bg-white p-5">
+        <section className="glass rounded-(--radius-card) p-5">
           <h2 className="font-semibold">1. Choose services</h2>
           <ul className="mt-4 space-y-2">
             {services.map((s) => (
               <li key={s.id}>
-                <label className={cn("flex cursor-pointer items-center gap-3 rounded-md border p-3", selected.includes(s.id) ? "border-brand bg-brand-soft" : "border-line")}>
+                <label className={cn("flex cursor-pointer items-center gap-3 rounded-2xl border p-3", selected.includes(s.id) ? "border-brand bg-brand-soft" : "border-line")}>
                   <input type="checkbox" name="serviceIds" value={s.id} checked={selected.includes(s.id)} onChange={(e) => setSelected((cur) => (e.target.checked ? [...cur, s.id] : cur.filter((x) => x !== s.id)))} className="size-4 accent-brand" />
                   <span className="flex-1"><span className="font-medium">{s.name}</span><span className="block text-xs text-muted">{s.durationMinutes} min</span></span>
                   <span className="tabular text-sm font-semibold">{money(s.promoPriceMinor ?? s.priceMinor, currency)}</span>
@@ -71,11 +71,11 @@ export function BookingWizard({ provider, services, currency, preselect, areas }
           </ul>
         </section>
 
-        <section className="rounded-(--radius-card) border border-line bg-white p-5">
+        <section className="glass rounded-(--radius-card) p-5">
           <h2 className="font-semibold">2. Where?</h2>
           <div className="mt-4 flex flex-wrap gap-2">
-            {provider.offersStudio && <button type="button" onClick={() => setLocation("STUDIO")} className={cn("rounded-md border px-4 py-2 text-sm", location === "STUDIO" ? "border-brand bg-brand-soft text-brand-dark" : "border-line")}>At the studio</button>}
-            {provider.offersHome && <button type="button" disabled={!homeOk} onClick={() => setLocation("HOME")} className={cn("rounded-md border px-4 py-2 text-sm disabled:opacity-40", location === "HOME" ? "border-brand bg-brand-soft text-brand-dark" : "border-line")}>At my home</button>}
+            {provider.offersStudio && <button type="button" onClick={() => setLocation("STUDIO")} className={cn("rounded-2xl border px-4 py-2 text-sm", location === "STUDIO" ? "border-brand bg-brand-soft text-brand-dark" : "border-line")}>At the studio</button>}
+            {provider.offersHome && <button type="button" disabled={!homeOk} onClick={() => setLocation("HOME")} className={cn("rounded-2xl border px-4 py-2 text-sm disabled:opacity-40", location === "HOME" ? "border-brand bg-brand-soft text-brand-dark" : "border-line")}>At my home</button>}
           </div>
           {provider.offersHome && !homeOk && chosen.length > 0 && <p className="mt-2 text-xs text-muted">Home service isn&apos;t available for every selected service.</p>}
           <input type="hidden" name="locationType" value={location} />
@@ -87,11 +87,11 @@ export function BookingWizard({ provider, services, currency, preselect, areas }
           )}
         </section>
 
-        <section className="rounded-(--radius-card) border border-line bg-white p-5">
+        <section className="glass rounded-(--radius-card) p-5">
           <h2 className="font-semibold">3. Pick a time</h2>
           <div className="-mx-1 mt-4 flex gap-2 overflow-x-auto px-1 pb-2">
             {days.map((d) => (
-              <button type="button" key={d.iso} onClick={() => setDate(d.iso)} className={cn("flex w-16 shrink-0 flex-col items-center rounded-md border py-2 text-sm", date === d.iso ? "border-brand bg-brand text-white" : "border-line hover:border-brand-mid")}>
+              <button type="button" key={d.iso} onClick={() => setDate(d.iso)} className={cn("flex w-16 shrink-0 flex-col items-center rounded-2xl border py-2 text-sm", date === d.iso ? "border-brand bg-brand text-white" : "border-line hover:border-brand-mid")}>
                 <span className="text-xs opacity-80">{d.wd}</span><span className="font-medium">{d.label}</span>
               </button>
             ))}
@@ -101,14 +101,14 @@ export function BookingWizard({ provider, services, currency, preselect, areas }
               : slots === null ? <p className="text-sm text-muted">Checking availability…</p>
               : slots.length === 0 ? <p className="text-sm text-muted">No openings on this day. Try another date.</p>
               : <div className="grid grid-cols-3 gap-2 sm:grid-cols-5">{slots.map((s) => (
-                  <button type="button" key={s.startsAt} onClick={() => setSlot(s.startsAt)} className={cn("tabular rounded-md border py-2 text-sm", slot === s.startsAt ? "border-brand bg-brand text-white" : "border-line hover:border-brand-mid")}>{timeFmt.format(new Date(s.startsAt))}</button>
+                  <button type="button" key={s.startsAt} onClick={() => setSlot(s.startsAt)} className={cn("tabular rounded-2xl border py-2 text-sm", slot === s.startsAt ? "border-brand bg-brand text-white" : "border-line hover:border-brand-mid")}>{timeFmt.format(new Date(s.startsAt))}</button>
                 ))}</div>}
           </div>
           <input type="hidden" name="startsAt" value={slot} />
           <p className="mt-3 text-xs text-muted">Times are local to the professional ({provider.timezone.replace("_", " ")}).</p>
         </section>
 
-        <section className="rounded-(--radius-card) border border-line bg-white p-5">
+        <section className="glass rounded-(--radius-card) p-5">
           <h2 className="font-semibold">4. Anything else?</h2>
           <div className="mt-4 grid gap-3 sm:grid-cols-2">
             <Field label="Note for your professional (optional)" className="sm:col-span-2"><Textarea name="note" rows={3} maxLength={1000} /></Field>
@@ -117,7 +117,7 @@ export function BookingWizard({ provider, services, currency, preselect, areas }
         </section>
       </div>
 
-      <aside className="h-fit space-y-4 rounded-(--radius-card) border border-line bg-white p-5 lg:sticky lg:top-20">
+      <aside className="h-fit space-y-4 glass rounded-(--radius-card) p-5 lg:sticky lg:top-20">
         <h2 className="font-semibold">Summary</h2>
         <dl className="space-y-2 text-sm">
           {chosen.map((s) => <div key={s.id} className="flex justify-between gap-2"><dt>{s.name}</dt><dd className="tabular">{money(s.promoPriceMinor ?? s.priceMinor, currency)}</dd></div>)}

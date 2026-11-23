@@ -32,10 +32,10 @@ export default async function Roles() {
 
 function RoleAssign({ roles }: { roles: { id: string; name: string }[] }) {
   return (
-    <form action={async (fd: FormData) => { "use server"; await adminUserAction(null, fd); }} className="mt-2 space-y-2 rounded-md border border-line p-4">
-      <input name="email" type="email" required placeholder="admin@example.com" className="h-9 w-full rounded-md border border-line px-3 text-sm" />
+    <form action={async (fd: FormData) => { "use server"; await adminUserAction(null, fd); }} className="mt-2 space-y-2 rounded-2xl border border-line p-4">
+      <input name="email" type="email" required placeholder="admin@example.com" className="h-9 w-full rounded-2xl border border-line px-3 text-sm" />
       <div className="grid gap-1 sm:grid-cols-3">{roles.map((r) => <label key={r.id} className="flex items-center gap-2 text-sm"><input type="checkbox" name="roleIds" value={r.id} className="accent-brand" />{r.name}</label>)}</div>
-      <button className="h-9 rounded-md bg-brand px-4 text-sm text-white">Assign roles</button>
+      <button className="h-9 rounded-2xl bg-brand px-4 text-sm text-white">Assign roles</button>
       <p className="text-xs text-muted">Unchecking every role removes admin access.</p>
     </form>
   );

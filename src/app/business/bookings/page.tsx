@@ -19,7 +19,7 @@ export default async function ProviderBookings({ searchParams }: { searchParams:
   ]);
   return (
     <>
-      <PageHeader title="Bookings" actions={<form><input name="q" defaultValue={sp.q} placeholder="Search reference or customer" className="h-9 rounded-md border border-line px-3 text-sm" /></form>} />
+      <PageHeader title="Bookings" actions={<form><input name="q" defaultValue={sp.q} placeholder="Search reference or customer" className="h-9 rounded-2xl border border-line px-3 text-sm" /></form>} />
       <div className="mb-4 flex gap-1 overflow-x-auto border-b border-line">{TABS.map(([k, l]) => <Link key={k} href={`?status=${k}`} className={cn("-mb-px shrink-0 border-b-2 px-3 py-2 text-sm", (sp.status ?? "") === k ? "border-brand font-medium text-brand" : "border-transparent text-muted")}>{l}</Link>)}</div>
       <Table head={["When", "Customer", "Services", "Location", "Your earnings", "Status"]} empty="No bookings in this view">
         {rows.map((b) => (

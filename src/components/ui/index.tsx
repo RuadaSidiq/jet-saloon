@@ -4,12 +4,12 @@ import { cn } from "@/lib/cn";
 type BtnProps = { variant?: "primary" | "secondary" | "ghost" | "danger"; size?: "sm" | "md" | "lg"; className?: string };
 export const btn = ({ variant = "primary", size = "md", className }: BtnProps = {}) =>
   cn(
-    "inline-flex items-center justify-center gap-2 rounded-md font-medium transition-colors disabled:opacity-50 disabled:pointer-events-none whitespace-nowrap",
+    "inline-flex items-center justify-center gap-2 rounded-full font-medium transition-all disabled:opacity-50 disabled:pointer-events-none whitespace-nowrap",
     size === "sm" && "h-8 px-3 text-sm", size === "md" && "h-10 px-4 text-sm", size === "lg" && "h-12 px-6 text-base",
-    variant === "primary" && "bg-brand text-white hover:bg-brand-dark",
-    variant === "secondary" && "border border-line bg-white text-ink hover:border-brand-mid hover:text-brand",
-    variant === "ghost" && "text-brand hover:bg-brand-soft",
-    variant === "danger" && "border border-bad/30 bg-white text-bad hover:bg-bad-soft",
+    variant === "primary" && "bg-gradient-to-b from-[#2a7ae0] to-brand text-white shadow-[0_8px_20px_-8px_rgba(23,105,210,.6)] hover:from-brand hover:to-brand-dark hover:shadow-[0_10px_24px_-8px_rgba(18,61,117,.6)]",
+    variant === "secondary" && "border border-white/80 bg-white/60 text-ink backdrop-blur-md shadow-[0_4px_14px_-8px_rgba(18,61,117,.25)] hover:bg-white/85 hover:text-brand",
+    variant === "ghost" && "text-brand hover:bg-white/60",
+    variant === "danger" && "border border-bad/25 bg-white/60 text-bad backdrop-blur-md hover:bg-bad-soft",
     className,
   );
 
@@ -20,7 +20,7 @@ export function LinkButton({ variant, size, className, ...p }: BtnProps & React.
   return <Link className={btn({ variant, size, className })} {...p} />;
 }
 
-export const inputCls = "h-10 w-full rounded-md border border-line bg-white px-3 text-sm text-ink placeholder:text-muted/70 focus:border-brand focus:outline-none focus:ring-2 focus:ring-brand/20 disabled:bg-canvas";
+export const inputCls = "h-10 w-full rounded-2xl border border-[#c3d5ee] bg-white/80 backdrop-blur-md shadow-[inset_0_1px_2px_rgba(18,61,117,.06)] px-3 text-sm text-ink placeholder:text-muted/70 focus:border-brand/40 focus:bg-white focus:outline-none focus:ring-4 focus:ring-brand/15 disabled:bg-canvas";
 export function Input(p: React.InputHTMLAttributes<HTMLInputElement>) { return <input {...p} className={cn(inputCls, p.className)} />; }
 export function Textarea(p: React.TextareaHTMLAttributes<HTMLTextAreaElement>) { return <textarea rows={4} {...p} className={cn(inputCls, "h-auto py-2", p.className)} />; }
 export function Select({ children, ...p }: React.SelectHTMLAttributes<HTMLSelectElement>) { return <select {...p} className={cn(inputCls, "pr-8", p.className)}>{children}</select>; }
@@ -40,8 +40,8 @@ export function Check({ label, ...p }: { label: React.ReactNode } & React.InputH
 
 export function Card({ className, children, title, action }: { className?: string; children: React.ReactNode; title?: React.ReactNode; action?: React.ReactNode }) {
   return (
-    <section className={cn("rounded-(--radius-card) border border-line bg-white", className)}>
-      {title && <header className="flex items-center justify-between gap-3 border-b border-line px-5 py-3.5"><h2 className="text-sm font-semibold">{title}</h2>{action}</header>}
+    <section className={cn("glass rounded-(--radius-card)", className)}>
+      {title && <header className="flex items-center justify-between gap-3 border-b border-white/60 px-5 py-3.5"><h2 className="text-sm font-semibold">{title}</h2>{action}</header>}
       <div className="p-5">{children}</div>
     </section>
   );
@@ -51,7 +51,7 @@ const TONES = {
   neutral: "bg-slate-100 text-slate-700", brand: "bg-brand-soft text-brand-dark", ok: "bg-ok-soft text-ok", warn: "bg-warn-soft text-warn", bad: "bg-bad-soft text-bad",
 };
 export function Badge({ tone = "neutral", children }: { tone?: keyof typeof TONES; children: React.ReactNode }) {
-  return <span className={cn("inline-flex items-center gap-1 rounded px-2 py-0.5 text-xs font-medium", TONES[tone])}>{children}</span>;
+  return <span className={cn("inline-flex items-center gap-1 rounded-full px-2.5 py-0.5 text-xs font-medium", TONES[tone])}>{children}</span>;
 }
 
 const STATUS_TONE: Record<string, keyof typeof TONES> = {
@@ -74,7 +74,7 @@ export function PageHeader({ title, description, actions }: { title: string; des
 
 export function Stat({ label, value, sub }: { label: string; value: React.ReactNode; sub?: React.ReactNode }) {
   return (
-    <div className="rounded-(--radius-card) border border-line bg-white px-4 py-3.5">
+    <div className="glass rounded-(--radius-card) px-4 py-3.5">
       <div className="text-xs font-medium text-muted">{label}</div>
       <div className="tabular mt-1 text-xl font-semibold">{value}</div>
       {sub && <div className="mt-0.5 text-xs text-muted">{sub}</div>}
@@ -84,7 +84,7 @@ export function Stat({ label, value, sub }: { label: string; value: React.ReactN
 
 export function Empty({ title, body, action }: { title: string; body?: string; action?: React.ReactNode }) {
   return (
-    <div className="rounded-(--radius-card) border border-dashed border-line bg-canvas px-6 py-10 text-center">
+    <div className="glass rounded-(--radius-card) border-dashed px-6 py-10 text-center">
       <p className="font-medium">{title}</p>
       {body && <p className="mx-auto mt-1 max-w-md text-sm text-muted">{body}</p>}
       {action && <div className="mt-4">{action}</div>}
@@ -95,9 +95,9 @@ export function Empty({ title, body, action }: { title: string; body?: string; a
 export function Table({ head, children, empty }: { head: React.ReactNode[]; children: React.ReactNode; empty?: React.ReactNode }) {
   const hasRows = Array.isArray(children) ? children.length > 0 : !!children;
   return (
-    <div className="overflow-x-auto rounded-(--radius-card) border border-line bg-white">
+    <div className="overflow-x-auto glass rounded-(--radius-card)">
       <table className="w-full min-w-[640px] text-left text-sm">
-        <thead className="border-b border-line bg-canvas text-xs uppercase tracking-wide text-muted"><tr>{head.map((h, i) => <th key={i} className="px-4 py-2.5 font-medium">{h}</th>)}</tr></thead>
+        <thead className="border-b border-white/60 bg-white/40 text-xs uppercase tracking-wide text-muted"><tr>{head.map((h, i) => <th key={i} className="px-4 py-2.5 font-medium">{h}</th>)}</tr></thead>
         <tbody className="divide-y divide-line [&_td]:px-4 [&_td]:py-3">{hasRows ? children : <tr><td colSpan={head.length} className="py-10 text-center text-muted">{empty ?? "Nothing here yet"}</td></tr>}</tbody>
       </table>
     </div>
@@ -116,8 +116,8 @@ export function Pagination({ page, pages, href }: { page: number; pages: number;
 }
 
 export function Notice({ tone = "brand", children }: { tone?: "brand" | "warn" | "bad" | "ok"; children: React.ReactNode }) {
-  const c = { brand: "border-brand/20 bg-brand-soft text-brand-dark", warn: "border-warn/20 bg-warn-soft text-warn", bad: "border-bad/20 bg-bad-soft text-bad", ok: "border-ok/20 bg-ok-soft text-ok" }[tone];
-  return <div className={cn("rounded-md border px-4 py-3 text-sm", c)}>{children}</div>;
+  const c = { brand: "border-white/70 bg-brand-soft/70 text-brand-dark", warn: "border-warn/20 bg-warn-soft text-warn", bad: "border-bad/20 bg-bad-soft text-bad", ok: "border-ok/20 bg-ok-soft text-ok" }[tone];
+  return <div className={cn("rounded-2xl border px-4 py-3 text-sm backdrop-blur-md", c)}>{children}</div>;
 }
 
 export function Stars({ value, size = "sm" }: { value: number; size?: "sm" | "md" }) {

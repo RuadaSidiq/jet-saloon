@@ -28,11 +28,11 @@ export default async function AdminBookings({ searchParams }: { searchParams: Pr
     <>
       <PageHeader title="Bookings" description={`${total} matching`} />
       <SearchBar placeholder="Booking ref, payment ref, customer email or provider" defaultValue={sp.q}>
-        <select name="status" defaultValue={sp.status ?? ""} className="h-9 rounded-md border border-line px-2 text-sm"><option value="">Any status</option>{STATUSES.map((s) => <option key={s} value={s}>{s.toLowerCase().replace(/_/g, " ")}</option>)}</select>
-        <select name="payment" defaultValue={sp.payment ?? ""} className="h-9 rounded-md border border-line px-2 text-sm"><option value="">Any payment</option>{["UNPAID", "PROCESSING", "PAID", "PARTIALLY_REFUNDED", "REFUNDED", "FAILED"].map((s) => <option key={s} value={s}>{s.toLowerCase().replace(/_/g, " ")}</option>)}</select>
-        <select name="country" defaultValue={sp.country ?? ""} className="h-9 rounded-md border border-line px-2 text-sm"><option value="">All countries</option>{countries.map((c) => <option key={c.code} value={c.code}>{c.name}</option>)}</select>
-        <input type="date" name="from" defaultValue={sp.from} className="h-9 rounded-md border border-line px-2 text-sm" aria-label="From" />
-        <input type="date" name="to" defaultValue={sp.to} className="h-9 rounded-md border border-line px-2 text-sm" aria-label="To" />
+        <select name="status" defaultValue={sp.status ?? ""} className="h-9 rounded-2xl border border-line px-2 text-sm"><option value="">Any status</option>{STATUSES.map((s) => <option key={s} value={s}>{s.toLowerCase().replace(/_/g, " ")}</option>)}</select>
+        <select name="payment" defaultValue={sp.payment ?? ""} className="h-9 rounded-2xl border border-line px-2 text-sm"><option value="">Any payment</option>{["UNPAID", "PROCESSING", "PAID", "PARTIALLY_REFUNDED", "REFUNDED", "FAILED"].map((s) => <option key={s} value={s}>{s.toLowerCase().replace(/_/g, " ")}</option>)}</select>
+        <select name="country" defaultValue={sp.country ?? ""} className="h-9 rounded-2xl border border-line px-2 text-sm"><option value="">All countries</option>{countries.map((c) => <option key={c.code} value={c.code}>{c.name}</option>)}</select>
+        <input type="date" name="from" defaultValue={sp.from} className="h-9 rounded-2xl border border-line px-2 text-sm" aria-label="From" />
+        <input type="date" name="to" defaultValue={sp.to} className="h-9 rounded-2xl border border-line px-2 text-sm" aria-label="To" />
       </SearchBar>
       <Table head={["Reference", "Customer", "Provider", "Service", "Appointment", "City", "Amount", "Status", "Payment", "Txn ref"]}>
         {rows.map((b) => (
