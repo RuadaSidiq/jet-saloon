@@ -110,7 +110,7 @@ test("a new provider applies, an admin approves, and the profile goes live", asy
   await page.waitForURL("**/business?submitted=1");
 
   // Not discoverable before approval
-  const res = await page.request.get(`/api/v1/providers?q=${encodeURIComponent(business)}`);
+  const res = await page.request.get(`/api/v1/providers?q=${id}`);
   expect((await res.json()).results.some((r: { businessName: string }) => r.businessName === business)).toBe(false);
 
   const admin = await (await browser.newContext()).newPage();
@@ -122,7 +122,7 @@ test("a new provider applies, an admin approves, and the profile goes live", asy
   await admin.getByRole("button", { name: "Approve" }).click();
   await expect(admin.locator("main").getByText("Approved", { exact: true }).first()).toBeVisible();
 
-  const after = await page.request.get(`/api/v1/providers?q=${encodeURIComponent(business)}`);
+  const after = await page.request.get(`/api/v1/providers?q=${id}`);
   expect((await after.json()).results.some((r: { businessName: string }) => r.businessName === business)).toBe(true);
 });
 

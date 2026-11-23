@@ -12,7 +12,7 @@ export default async function AccountLayout({ children }: { children: React.Reac
     { href: "/account/favourites", label: "Favourites", icon: "heart", tabs: [{ href: "/account/favourites", label: "Saved professionals" }, { href: "/account/reviews", label: "My reviews" }] },
     { href: "/account/notifications", label: "Notifications", icon: "bell", badge: unread },
     { href: "/account/support", label: "Support", icon: "support" },
-    { href: "/account/settings", label: "Settings", icon: "settings" },
+    { href: "/account/settings", label: "Settings", icon: "settings", tabs: [{ href: "/account/settings", label: "Profile" }, { href: "/account/security", label: "Security" }] },
   ];
   const links = [...(user.role === "PROVIDER" ? [{ href: "/business", label: "My business" }] : []), ...(user.role === "ADMIN" ? [{ href: "/admin", label: "Admin console" }] : [])];
   return <DashShell nav={nav} title="My account" variant="customer" user={user} links={links}>{children}</DashShell>;

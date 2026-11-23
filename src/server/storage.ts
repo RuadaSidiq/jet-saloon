@@ -1,3 +1,4 @@
+import "server-only"; // never bundle this module (or the secrets it reads) into browser code
 /**
  * File storage backed by Postgres (StoredFile), so uploads survive serverless deploys.
  * Public files are served via /api/files/public/<key>; private files (identity documents)
@@ -27,6 +28,8 @@ export function sniff(buf: Buffer, allowed: ("image" | "document" | "video")[]) 
 }
 
 export async function saveFile(file: File, visibility: "public" | "private", allowed: ("image" | "document" | "video")[]) {
+  const { rateLimit } = await import("./ratelimit");
+  await rateLimit(`upload:${visibility}:${(await import("next/headers").then((m) => m.headers()).catch(() => null))?.get("x-real-ip") ?? "local"}`, 60, 600);
   const buf = Buffer.from(await file.arrayBuffer());
   if (buf.length === 0) throw new AppError("FILE_EMPTY", "The file is empty");
   const sig = sniff(buf, allowed);

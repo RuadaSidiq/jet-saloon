@@ -4,6 +4,9 @@ import "./globals.css";
 import { getAllSettings } from "@/server/modules/settings";
 import { appUrl } from "@/server/app-url";
 
+// Every page renders per request so it receives the CSP nonce from middleware.
+export const dynamic = "force-dynamic";
+
 const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export async function generateMetadata(): Promise<Metadata> {

@@ -119,6 +119,10 @@ model User {
   referrals       User[]     @relation("Referrals")
   notificationPrefs Json     @default("{\"email\":true,\"sms\":true,\"inApp\":true,\"marketing\":false}")
   showProfileToProviders Boolean @default(true)
+  totpSecretEnc   String? // AES-256-GCM encrypted TOTP secret
+  totpEnabledAt   DateTime?
+  totpLastStep    Int? // last accepted time-step, prevents code replay
+  recoveryCodeHashes String[]
   adminNotes      String?
   createdAt       DateTime   @default(now())
   updatedAt       DateTime   @updatedAt
@@ -172,6 +176,7 @@ enum TokenType {
   EMAIL_VERIFY
   PASSWORD_RESET
   PHONE_VERIFY
+  MFA_LOGIN
 }
 
 model VerificationToken {
@@ -932,4 +937,13 @@ model StoredFile {
   sizeBytes  Int
   data       Bytes
   createdAt  DateTime @default(now())
+}
+
+// Fixed-window rate-limit counters shared by every serverless instance. Keys are SHA-256 hashed.
+model RateLimitBucket {
+  key     String   @id
+  count   Int
+  resetAt DateTime
+
+  @@index([resetAt])
 }

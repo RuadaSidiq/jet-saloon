@@ -18,7 +18,7 @@ export async function getConversation(bookingRef: string, userId: string) {
 }
 
 export async function sendMessage(bookingRef: string, userId: string, body: string, attachmentUrl?: string) {
-  rateLimit(`msg:${userId}`, 30, 60);
+  await rateLimit(`msg:${userId}`, 30, 60);
   const text = body.trim();
   if (!text && !attachmentUrl) throw new AppError("EMPTY", "Write a message");
   const { booking, conversation } = await getConversation(bookingRef, userId);

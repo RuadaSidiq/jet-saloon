@@ -1,3 +1,4 @@
+import "server-only"; // never bundle this module (or the secrets it reads) into browser code
 /** Delivery drivers. Without credentials they log to the console (development) — never silently "succeed" in production. */
 export async function sendEmail(to: string, subject: string, text: string) {
   const key = process.env.RESEND_API_KEY;

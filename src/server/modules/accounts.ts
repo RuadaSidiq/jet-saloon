@@ -18,7 +18,7 @@ export const registerSchema = z.object({
 const referral = () => randomToken(6).replace(/[^a-zA-Z0-9]/g, "").slice(0, 8).toUpperCase().padEnd(8, "X");
 
 export async function registerUser(input: z.infer<typeof registerSchema>, ip = "unknown") {
-  rateLimit(`register:${ip}`, 10, 3600);
+  await rateLimit(`register:${ip}`, 10, 3600);
   const data = registerSchema.parse(input);
   if (await db.user.findUnique({ where: { email: data.email } })) throw new AppError("EMAIL_TAKEN", "An account with this email already exists. Try signing in.");
   const country = data.countryCode ? await db.country.findUnique({ where: { code: data.countryCode.toUpperCase() } }) : null;
@@ -32,12 +32,15 @@ export async function registerUser(input: z.infer<typeof registerSchema>, ip = "
 
 export async function authenticate(emailRaw: string, password: string, ip = "unknown") {
   const email = emailRaw.trim().toLowerCase();
-  rateLimit(`login:${ip}`, 20, 900);
-  rateLimit(`login:${email}`, 8, 900);
+  await rateLimit(`login:${ip}`, 20, 900);
+  await rateLimit(`login:${email}`, 8, 900);
   const user = await db.user.findUnique({ where: { email } });
   // Constant-ish time: always run a bcrypt compare.
   const ok = await verifyPassword(password, user?.passwordHash ?? "$2a$12$abcdefghijklmnopqrstuuJ0cE9sQ8yYb0j3Vt8ZtS4l0yq3gq1aW");
-  if (!user || !ok) throw new AppError("BAD_CREDENTIALS", "Incorrect email or password");
+  if (!user || !ok) {
+    if (user?.role === "ADMIN") await audit({ actorId: user.id, action: "auth.login_failed", entityType: "User", entityId: user.id, ip });
+    throw new AppError("BAD_CREDENTIALS", "Incorrect email or password");
+  }
   if (user.status !== "ACTIVE") throw new AppError("SUSPENDED", "This account is not active. Please contact support.");
   return user;
 }
@@ -50,7 +53,7 @@ async function issueToken(userId: string, type: "EMAIL_VERIFY" | "PASSWORD_RESET
 }
 
 export async function sendVerificationEmail(userId: string) {
-  rateLimit(`verify-mail:${userId}`, 5, 3600);
+  await rateLimit(`verify-mail:${userId}`, 5, 3600);
   const token = await issueToken(userId, "EMAIL_VERIFY", 60 * 48);
   await notify(userId, "account.verify_email", "Confirm your email", "Please confirm your email address to secure your account.", `/verify-email?token=${token}`);
 }
@@ -69,7 +72,7 @@ export async function verifyEmail(token: string) {
 }
 
 export async function requestPasswordReset(emailRaw: string, ip = "unknown") {
-  rateLimit(`reset:${ip}`, 5, 3600);
+  await rateLimit(`reset:${ip}`, 5, 3600);
   const user = await db.user.findUnique({ where: { email: emailRaw.trim().toLowerCase() } });
   if (!user) return; // do not reveal whether the email exists
   const token = await issueToken(user.id, "PASSWORD_RESET", 60);
@@ -89,6 +92,9 @@ export async function changePassword(userId: string, current: string, next: stri
   if (!(await verifyPassword(current, u.passwordHash))) throw new AppError("BAD_CREDENTIALS", "Your current password is incorrect");
   if (!isStrongEnough(next)) throw new AppError("WEAK", "Use at least 8 characters, including a letter and a number");
   await db.user.update({ where: { id: userId }, data: { passwordHash: await hashPassword(next) } });
+  const { destroyOtherSessions } = await import("../auth/session");
+  await destroyOtherSessions(userId); // sign out every other device
+  await audit({ actorId: userId, action: "account.password_changed", entityType: "User", entityId: userId });
 }
 
 /** Validate a phone number against the country's configured pattern; returns E.164. */

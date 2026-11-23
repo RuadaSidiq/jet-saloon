@@ -4,7 +4,7 @@ export async function GET(_: Request, { params }: { params: Promise<{ key: strin
   const key = (await params).key.join("/");
   try {
     const buf = await readStored("public", key);
-    return new Response(new Uint8Array(buf), { headers: { "Content-Type": mimeFor(key), "Cache-Control": "public, max-age=31536000, immutable", "X-Content-Type-Options": "nosniff" } });
+    return new Response(new Uint8Array(buf), { headers: { "Content-Type": mimeFor(key), "Cache-Control": "public, max-age=31536000, immutable", "X-Content-Type-Options": "nosniff", "Content-Security-Policy": "default-src 'none'; img-src 'self'; media-src 'self'; style-src 'unsafe-inline'; sandbox" } });
   } catch {
     return new Response("Not found", { status: 404 });
   }

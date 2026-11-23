@@ -4,6 +4,7 @@ import { expireStaleHolds } from "./availability";
 import { reconcilePendingPayments } from "./payments/service";
 import { releaseSettlements } from "./settlement";
 import { getSetting } from "./settings";
+import { purgeExpiredRateLimits } from "../ratelimit";
 
 export async function sendReminders() {
   const hours = await getSetting("booking.reminderHoursBefore");
@@ -30,6 +31,7 @@ export async function runAllJobs() {
     ["settled", () => releaseSettlements()],
     ["reminders", sendReminders],
     ["delivered", () => processDeliveries()],
+    ["rateLimitsPurged", purgeExpiredRateLimits],
   ];
   for (const [k, fn] of steps) {
     try { out[k] = await fn(); } catch (e) { out[k] = "error: " + (e as Error).message; console.error(k, e); }

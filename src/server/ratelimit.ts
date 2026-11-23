@@ -1,19 +1,25 @@
 /**
- * Fixed-window rate limiter. In-memory per instance — adequate for a single node.
- * For multiple instances, back this with Redis (REDIS_URL) — see docs/DEPLOYMENT.md.
+ * Fixed-window rate limiter backed by Postgres, so limits hold across every serverless instance.
+ * One atomic upsert per check. Keys are SHA-256 hashed so emails/IPs aren't stored in clear.
  */
+import { db } from "./db";
+import { sha256 } from "./crypto";
 import { AppError } from "./errors";
-const buckets = new Map<string, { count: number; resetAt: number }>();
 
-export function rateLimit(key: string, limit: number, windowSec: number) {
-  const now = Date.now();
-  const b = buckets.get(key);
-  if (!b || b.resetAt < now) {
-    buckets.set(key, { count: 1, resetAt: now + windowSec * 1000 });
-    return;
-  }
-  if (++b.count > limit) throw new AppError("RATE_LIMITED", "Too many attempts. Please wait a moment and try again.", 429);
+export async function rateLimit(key: string, limit: number, windowSec: number) {
+  const k = sha256(key);
+  const rows = await db.$queryRaw<{ count: number }[]>`
+    INSERT INTO "RateLimitBucket" ("key", "count", "resetAt")
+    VALUES (${k}, 1, now() + make_interval(secs => ${windowSec}))
+    ON CONFLICT ("key") DO UPDATE SET
+      "count"   = CASE WHEN "RateLimitBucket"."resetAt" < now() THEN 1 ELSE "RateLimitBucket"."count" + 1 END,
+      "resetAt" = CASE WHEN "RateLimitBucket"."resetAt" < now() THEN now() + make_interval(secs => ${windowSec}) ELSE "RateLimitBucket"."resetAt" END
+    RETURNING "count"`;
+  if ((rows[0]?.count ?? 0) > limit) throw new AppError("RATE_LIMITED", "Too many attempts. Please wait a few minutes and try again.", 429);
 }
-export function resetRateLimits() {
-  buckets.clear();
+
+/** Housekeeping for the worker. */
+export async function purgeExpiredRateLimits() {
+  const r = await db.rateLimitBucket.deleteMany({ where: { resetAt: { lt: new Date(Date.now() - 3600_000) } } });
+  return r.count;
 }

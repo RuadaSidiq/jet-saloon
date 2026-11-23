@@ -13,5 +13,7 @@ export async function run(fn: () => Promise<ActionResult | void>): Promise<Actio
 export const str = (fd: FormData, k: string) => String(fd.get(k) ?? "").trim();
 export const bool = (fd: FormData, k: string) => fd.get(k) === "on" || fd.get(k) === "true";
 export async function clientIp() {
-  return (await headers()).get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
+  const h = await headers();
+  // Vercel sets x-real-ip from the TCP connection; x-forwarded-for can be spoofed by clients elsewhere.
+  return h.get("x-real-ip") ?? h.get("x-forwarded-for")?.split(",")[0]?.trim() ?? "unknown";
 }

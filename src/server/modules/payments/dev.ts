@@ -1,3 +1,4 @@
+import "server-only"; // never bundle this module (or the secrets it reads) into browser code
 /**
  * DEVELOPMENT-ONLY test gateway, used for local development and automated tests without real credentials.
  * It is disabled when NODE_ENV=production regardless of configuration. It never moves real money and

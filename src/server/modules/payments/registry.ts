@@ -1,3 +1,4 @@
+import "server-only"; // never bundle this module (or the secrets it reads) into browser code
 import { AppError } from "../../errors";
 import { devGateway } from "./dev";
 import { flutterwave } from "./flutterwave";

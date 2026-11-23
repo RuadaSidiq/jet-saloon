@@ -1,11 +1,14 @@
+import "server-only"; // never bundle this module (or the secrets it reads) into browser code
 import { cookies, headers } from "next/headers";
 import { cache } from "react";
 import { db } from "../db";
 import { randomToken, sha256 } from "../crypto";
 import type { User } from "@prisma/client";
 
-export const SESSION_COOKIE = "js_session";
+// __Host- prefix (production): cookie is locked to this exact host, HTTPS-only, path=/ — can't be set by subdomains.
+export const SESSION_COOKIE = process.env.NODE_ENV === "production" ? "__Host-muv_session" : "muv_session";
 const SESSION_DAYS = 30;
+const IDLE_DAYS = 14; // sessions unused for this long are rejected
 
 export async function createSession(userId: string) {
   const token = randomToken();
@@ -40,6 +43,10 @@ export async function userFromToken(token: string | undefined | null): Promise<U
   if (!token) return null;
   const s = await db.session.findUnique({ where: { tokenHash: sha256(token) }, include: { user: true } });
   if (!s || s.expiresAt < new Date() || s.user.status !== "ACTIVE") return null;
+  if (Date.now() - s.lastSeenAt.getTime() > IDLE_DAYS * 864e5) {
+    await db.session.delete({ where: { id: s.id } }).catch(() => {});
+    return null;
+  }
   if (Date.now() - s.lastSeenAt.getTime() > 15 * 60_000) {
     await db.session.update({ where: { id: s.id }, data: { lastSeenAt: new Date() } }).catch(() => {});
   }
@@ -55,3 +62,9 @@ export const currentUser = cache(async (): Promise<User | null> => {
   if (auth?.startsWith("Bearer ")) return userFromToken(auth.slice(7));
   return null;
 });
+
+/** Sign out every other device (keeps the current session). */
+export async function destroyOtherSessions(userId: string) {
+  const token = (await cookies()).get(SESSION_COOKIE)?.value;
+  await db.session.deleteMany({ where: { userId, ...(token ? { NOT: { tokenHash: sha256(token) } } : {}) } });
+}

@@ -4,6 +4,7 @@ import { db } from "../db";
 import { AppError, forbidden } from "../errors";
 import type { Permission } from "../rbac";
 import { currentUser } from "./session";
+import { adminMfaRequired } from "./mfa";
 
 export async function requireUser() {
   const u = await currentUser();
@@ -32,6 +33,7 @@ export async function hasPermission(userId: string, p: Permission) {
 
 export async function requirePermission(p: Permission) {
   const u = await requireUser();
+  if (u.role === "ADMIN" && !u.totpEnabledAt && adminMfaRequired()) throw forbidden("Turn on two-factor authentication (Account → Security) to use admin tools");
   if (!(await hasPermission(u.id, p))) throw forbidden();
   return u;
 }
@@ -39,6 +41,7 @@ export async function requirePermission(p: Permission) {
 export async function pageAdmin(p: Permission, next = "/admin") {
   const u = await pageUser(next);
   if (u.role !== "ADMIN") redirect("/");
+  if (!u.totpEnabledAt && adminMfaRequired()) redirect("/account/security?required=1");
   if (!(await hasPermission(u.id, p))) redirect("/admin?denied=" + p);
   return u;
 }

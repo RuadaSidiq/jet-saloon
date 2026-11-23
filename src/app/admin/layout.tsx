@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { pageUser, permissionsOf } from "@/server/auth/guards";
+import { adminMfaRequired } from "@/server/auth/mfa";
 import { db } from "@/server/db";
 import { DashShell, type NavItem, type NavTab } from "@/components/dash/shell";
 import type { Permission } from "@/server/rbac";
@@ -7,6 +8,7 @@ import type { Permission } from "@/server/rbac";
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
   const user = await pageUser("/admin");
   if (user.role !== "ADMIN") redirect("/");
+  if (!user.totpEnabledAt && adminMfaRequired()) redirect("/account/security?required=1");
   const perms = await permissionsOf(user.id);
   const can = (p: Permission) => perms === "ALL" || perms.has(p);
   const [pendingApps, pendingPayouts, openTickets] = await Promise.all([

@@ -1,3 +1,4 @@
+import "server-only"; // never bundle this module (or the secrets it reads) into browser code
 import { createCipheriv, createDecipheriv, createHash, createHmac, randomBytes, timingSafeEqual } from "crypto";
 
 function key(): Buffer {

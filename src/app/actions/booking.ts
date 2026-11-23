@@ -20,7 +20,7 @@ const bookingSchema = z.object({
 export async function createBookingAction(_: ActionResult | null, fd: FormData) {
   return run(async () => {
     const u = await requireUser();
-    rateLimit(`book:${u.id}`, 20, 600);
+    await rateLimit(`book:${u.id}`, 20, 600);
     const d = bookingSchema.parse({
       providerId: str(fd, "providerId"), serviceIds: fd.getAll("serviceIds").map(String), startsAt: str(fd, "startsAt"), staffId: str(fd, "staffId") || undefined,
       locationType: str(fd, "locationType") || "STUDIO", homeAddress: str(fd, "homeAddress") || undefined, homeCityId: str(fd, "homeCityId") || undefined,
@@ -72,6 +72,7 @@ export async function rescheduleAction(_: ActionResult | null, fd: FormData) {
 export async function reviewAction(_: ActionResult | null, fd: FormData) {
   return run(async () => {
     const u = await requireUser();
+    await rateLimit(`review:${u.id}`, 10, 3600);
     await createReview(u.id, str(fd, "ref"), Number(fd.get("rating")), str(fd, "comment"));
     return { ok: true, message: "Thanks for your review!" };
   });
@@ -108,6 +109,7 @@ export async function toggleFavouriteAction(_: ActionResult | null, fd: FormData
 export async function openTicketAction(_: ActionResult | null, fd: FormData) {
   return run(async () => {
     const u = await requireUser();
+    await rateLimit(`ticket:${u.id}`, 10, 3600);
     const t = await openTicket(u.id, { subject: str(fd, "subject"), category: str(fd, "category"), body: str(fd, "body"), bookingRef: str(fd, "bookingRef") || undefined });
     return { ok: true, data: { redirect: `/account/support/${t.reference}` } };
   });

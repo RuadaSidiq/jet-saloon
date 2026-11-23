@@ -1,3 +1,4 @@
+import "server-only"; // never bundle this module (or the secrets it reads) into browser code
 import { PrismaClient } from "@prisma/client";
 
 const g = globalThis as unknown as { prisma?: PrismaClient };

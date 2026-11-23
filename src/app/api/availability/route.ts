@@ -7,7 +7,7 @@ import { rateLimit } from "@/server/ratelimit";
 export async function GET(req: Request) {
   const u = new URL(req.url);
   try {
-    rateLimit(`avail:${req.headers.get("x-forwarded-for") ?? "local"}`, 120, 60);
+    await rateLimit(`avail:${req.headers.get("x-real-ip") ?? req.headers.get("x-forwarded-for")?.split(",")[0] ?? "local"}`, 120, 60);
   } catch {
     return NextResponse.json({ error: "Too many requests" }, { status: 429 });
   }

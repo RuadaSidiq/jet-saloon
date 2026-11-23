@@ -17,6 +17,6 @@ export async function GET(_: Request, { params }: { params: Promise<{ id: string
   if (staff) await audit({ actorId: user.id, action: "document.view", entityType: "ProviderDocument", entityId: doc.id });
   const buf = await readStored("private", doc.storageKey);
   return new Response(new Uint8Array(buf), {
-    headers: { "Content-Type": doc.mimeType, "Content-Disposition": `inline; filename="${doc.fileName.replace(/[^\w.-]/g, "_")}"`, "Cache-Control": "private, no-store", "X-Content-Type-Options": "nosniff" },
+    headers: { "Content-Type": doc.mimeType, "Content-Disposition": `inline; filename="${doc.fileName.replace(/[^\w.-]/g, "_")}"`, "Cache-Control": "private, no-store", "X-Content-Type-Options": "nosniff", "Content-Security-Policy": "default-src 'none'; img-src 'self'; media-src 'self'; style-src 'unsafe-inline'; sandbox" },
   });
 }

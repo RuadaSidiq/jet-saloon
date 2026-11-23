@@ -1,3 +1,4 @@
+import "server-only"; // never bundle this module (or the secrets it reads) into browser code
 import { hmacHex, safeEqual, sha256 } from "../../crypto";
 import { httpJson, type PaymentGateway } from "./gateway";
 
