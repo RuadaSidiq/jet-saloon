@@ -5,10 +5,12 @@ import { searchProviders } from "@/server/modules/search";
 import { ProviderCard } from "@/components/site/provider-card";
 import { Newsletter } from "@/components/site/newsletter";
 import { HeroVisual } from "@/components/site/hero-visual";
-import { CategoryIcon } from "@/components/site/category-icon";
 import { Stars, btn } from "@/components/ui";
 
 export const dynamic = "force-dynamic";
+
+/** Bundled default photos per category (public/images/categories); an admin-uploaded image takes priority. */
+const CATEGORY_PHOTOS = new Set(["makeup-artists", "barbers", "hair-stylists", "lash-technicians", "nail-technicians", "skincare-specialists", "eyebrow-technicians", "massage-therapists", "spa-therapists", "waxing-specialists", "tattoo-artists", "other-beauty-services"]);
 
 const FAQ = [
   ["How do I know a professional is trustworthy?", "Every professional on Muv is reviewed by our verification team before they can accept bookings. Reviews can only be left by customers who completed a booking."],
@@ -68,21 +70,18 @@ export default async function Home() {
           <Link href="/search" className="hidden items-center gap-1 text-sm font-medium text-brand sm:flex">All services <ArrowRight className="size-4" /></Link>
         </div>
         <div className="mt-8 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
-          {categories.map((c, i) => (
-            <Link key={c.id} href={`/search?category=${c.slug}`} className="glass glass-hover group overflow-hidden rounded-3xl">
-              {c.imageUrl && (
-                // eslint-disable-next-line @next/next/no-img-element
-                <img src={c.imageUrl} alt="" className="aspect-[3/2] w-full object-cover transition duration-500 group-hover:scale-[1.03]" />
-              )}
-              <div className="flex items-start gap-3 p-4 sm:p-5">
-                {!c.imageUrl && <CategoryIcon icon={c.icon} index={i} />}
-                <div className="min-w-0">
-                  <p className="font-semibold text-ink group-hover:text-brand">{c.name}</p>
-                  {c.children.length > 0 && <p className="mt-0.5 line-clamp-2 text-xs leading-relaxed text-muted">{c.children.map((s) => s.name).join(" · ")}</p>}
-                </div>
-              </div>
-            </Link>
-          ))}
+          {categories.map((c) => {
+            const img = c.imageUrl ?? (CATEGORY_PHOTOS.has(c.slug) ? `/images/categories/${c.slug}.jpg` : null);
+            return (
+              <Link key={c.id} href={`/search?category=${c.slug}`} className="group relative block aspect-[4/3] overflow-hidden rounded-3xl bg-brand-soft shadow-[0_10px_30px_-18px_rgba(18,61,117,.45)]">
+                {img && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img src={img} alt="" loading="lazy" className="absolute inset-0 h-full w-full object-cover transition duration-500 group-hover:scale-[1.04]" />
+                )}
+                <span className="glass absolute bottom-3 left-3 right-3 truncate rounded-2xl px-3.5 py-2 text-sm font-semibold text-ink sm:right-auto">{c.name}</span>
+              </Link>
+            );
+          })}
         </div>
       </section>
 
