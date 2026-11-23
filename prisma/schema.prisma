@@ -6,8 +6,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL") // pooled connection for the app
+  directUrl = env("DATABASE_URL_UNPOOLED") // direct connection for migrations
 }
 
 // ───────────────────────────── Geography & currency ─────────────────────────────
@@ -919,4 +920,15 @@ model PlatformSetting {
   key       String   @id
   value     Json
   updatedAt DateTime @updatedAt
+}
+
+// Uploaded files (portfolio, avatars, category images, private verification documents).
+// Stored in Postgres so they survive serverless deploys; swap for S3/R2 when volumes grow.
+model StoredFile {
+  key        String   @id
+  visibility String // public | private
+  mimeType   String
+  sizeBytes  Int
+  data       Bytes
+  createdAt  DateTime @default(now())
 }

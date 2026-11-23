@@ -1,4 +1,5 @@
 import { db } from "../../db";
+import { appUrl } from "../../app-url";
 import { AppError, notFound } from "../../errors";
 import { reference } from "../../crypto";
 import { notify } from "../../notify";
@@ -23,7 +24,7 @@ export async function initiatePayment(bookingRef: string, customerId: string) {
   try {
     const { authorizationUrl } = await gateway.initialize({
       reference: ref, amountMinor: b.totalMinor, minorUnits: currency.minorUnits, currency: b.currency, email: b.customer.email,
-      callbackUrl: `${process.env.APP_URL}/payments/return?reference=${ref}`, metadata: { booking: b.reference },
+      callbackUrl: `${appUrl()}/payments/return?reference=${ref}`, metadata: { booking: b.reference },
     });
     await db.payment.update({ where: { id: payment.id }, data: { authorizationUrl } });
     await db.booking.update({ where: { id: b.id }, data: { paymentStatus: "PROCESSING" } });

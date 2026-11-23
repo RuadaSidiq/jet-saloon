@@ -15,6 +15,7 @@ jobs:
           --health-cmd pg_isready --health-interval 5s --health-timeout 5s --health-retries 10
     env:
       DATABASE_URL: postgresql://postgres:postgres@localhost:5432/postgres
+      DATABASE_URL_UNPOOLED: postgresql://postgres:postgres@localhost:5432/postgres
       TEST_DATABASE_ADMIN_URL: postgresql://postgres:postgres@localhost:5432/postgres
     steps:
       - uses: actions/checkout@v4

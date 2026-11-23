@@ -18,6 +18,7 @@ export default defineConfig({
     hookTimeout: 120_000,
     env: {
       DATABASE_URL: testUrl,
+      DATABASE_URL_UNPOOLED: testUrl,
       ENCRYPTION_KEY: "1".repeat(64),
       PAYMENTS_DEV_GATEWAY: "true",
       DEV_GATEWAY_SECRET: "test-secret",

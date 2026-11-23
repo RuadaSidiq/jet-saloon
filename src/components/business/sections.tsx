@@ -8,7 +8,7 @@ import { Check, Field, Input, Select, StatusBadge } from "@/components/ui";
 export function PortfolioManager({ items }: { items: PortfolioItem[] }) {
   return (
     <div className="space-y-4">
-      <p className="text-sm text-muted">Show your best work. Add at least 2 photos. JPG, PNG or WebP up to 8MB; MP4 video up to 50MB.</p>
+      <p className="text-sm text-muted">Show your best work. Add at least 2 photos. JPG, PNG or WebP, or short MP4 clips — up to 4MB each.</p>
       {items.length > 0 && (
         <ul className="grid grid-cols-2 gap-3 sm:grid-cols-4">
           {items.map((m) => (

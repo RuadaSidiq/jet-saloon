@@ -1,15 +1,15 @@
 /**
- * File storage. Local driver writes to ./storage (outside /public). Public files are served via
- * /api/files/public/<key>; private files (identity documents) only via an authorised route.
- * Swap in an S3/R2 driver by implementing the same three functions.
+ * File storage backed by Postgres (StoredFile), so uploads survive serverless deploys.
+ * Public files are served via /api/files/public/<key>; private files (identity documents)
+ * only via an authorised route. Files are validated by magic bytes, never the declared type.
+ * Vercel caps request bodies at ~4.5MB, so uploads are limited to 4MB.
  */
-import { mkdir, readFile, writeFile } from "fs/promises";
-import path from "path";
+import { db } from "./db";
 import { randomToken } from "./crypto";
 import { AppError } from "./errors";
 
-const ROOT = process.env.STORAGE_DIR ?? path.join(process.cwd(), "storage");
-const MAX = { image: 8 * 1024 * 1024, document: 10 * 1024 * 1024, video: 50 * 1024 * 1024 };
+export const MAX_UPLOAD_MB = 4;
+const MAX = { image: MAX_UPLOAD_MB * 1024 * 1024, document: MAX_UPLOAD_MB * 1024 * 1024, video: MAX_UPLOAD_MB * 1024 * 1024 };
 
 const SIGNATURES: { mime: string; ext: string; kind: keyof typeof MAX; test: (b: Buffer) => boolean }[] = [
   { mime: "image/jpeg", ext: "jpg", kind: "image", test: (b) => b[0] === 0xff && b[1] === 0xd8 && b[2] === 0xff },
@@ -19,11 +19,10 @@ const SIGNATURES: { mime: string; ext: string; kind: keyof typeof MAX; test: (b:
   { mime: "video/mp4", ext: "mp4", kind: "video", test: (b) => b.subarray(4, 8).toString() === "ftyp" },
 ];
 
-/** Validate by magic bytes (not the client-declared type) and size. */
 export function sniff(buf: Buffer, allowed: ("image" | "document" | "video")[]) {
   const sig = SIGNATURES.find((s) => s.test(buf));
   if (!sig || !allowed.includes(sig.kind)) throw new AppError("FILE_TYPE", `Unsupported file type. Allowed: ${allowed.join(", ")}`);
-  if (buf.length > MAX[sig.kind]) throw new AppError("FILE_SIZE", `File is too large (max ${MAX[sig.kind] / 1024 / 1024}MB)`);
+  if (buf.length > MAX[sig.kind]) throw new AppError("FILE_SIZE", `File is too large (max ${MAX_UPLOAD_MB}MB)`);
   return sig;
 }
 
@@ -32,15 +31,15 @@ export async function saveFile(file: File, visibility: "public" | "private", all
   if (buf.length === 0) throw new AppError("FILE_EMPTY", "The file is empty");
   const sig = sniff(buf, allowed);
   const key = `${new Date().toISOString().slice(0, 7)}/${randomToken(16)}.${sig.ext}`;
-  const full = path.join(ROOT, visibility, key);
-  await mkdir(path.dirname(full), { recursive: true });
-  await writeFile(full, buf);
+  await db.storedFile.create({ data: { key, visibility, mimeType: sig.mime, sizeBytes: buf.length, data: buf } });
   return { key, mime: sig.mime, size: buf.length, url: visibility === "public" ? `/api/files/public/${key}` : null };
 }
 
 export async function readStored(visibility: "public" | "private", key: string) {
   if (!/^[\w-]+\/[\w-]+\.(jpg|png|webp|pdf|mp4)$/.test(key)) throw new AppError("NOT_FOUND", "Not found", 404);
-  return readFile(path.join(ROOT, visibility, key));
+  const f = await db.storedFile.findUnique({ where: { key } });
+  if (!f || f.visibility !== visibility) throw new AppError("NOT_FOUND", "Not found", 404);
+  return Buffer.from(f.data);
 }
 
 export const mimeFor = (key: string) => SIGNATURES.find((s) => key.endsWith("." + s.ext))?.mime ?? "application/octet-stream";

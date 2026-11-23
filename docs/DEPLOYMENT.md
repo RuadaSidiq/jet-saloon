@@ -1,5 +1,23 @@
 # Deployment
 
+## Vercel + Neon (recommended, no domain needed)
+
+The repo is Vercel-ready: `vercel.json` pins the Frankfurt region (closest to West Africa), and the `vercel-build` script runs `prisma migrate deploy` and the idempotent reference-data seed before `next build`. **Every deploy applies database changes by itself.** Uploaded files are stored in Postgres (`StoredFile`), so nothing is lost between deploys. Uploads are capped at 4MB to match Vercel's request limit.
+
+1. **Import:** go to vercel.com/new → Import `RuadaSidiq/jet-saloon` → Framework: Next.js (auto). Don't deploy yet.
+2. **Database:** in the new project's **Storage** tab, choose **Create Database → Neon (Postgres)**, region **Frankfurt (eu-central-1)**, and connect it to all environments. This sets `DATABASE_URL` and `DATABASE_URL_UNPOOLED` automatically.
+3. **Environment variables:** add `ENCRYPTION_KEY`, `CRON_SECRET`, `SEED_ADMIN_EMAIL` and `SEED_ADMIN_PASSWORD` (generate them as shown in `.env.example`).
+4. **Deploy.** Your site is live at `https://<project>.vercel.app`. Sign in at `/login` with the seed admin account, then remove `SEED_ADMIN_PASSWORD` from Vercel.
+5. **Scheduled jobs:** Vercel's free plan runs `/api/cron` once a day (`vercel.json`). For reminders, settlement and hold expiry every 5 minutes, add the GitHub repository secrets `APP_URL` (your vercel.app URL) and `CRON_SECRET`. The `Scheduled jobs` workflow then calls the endpoint. On Vercel Pro you can instead change the cron schedule to every minute.
+6. **Later:** add `PAYSTACK_SECRET_KEY` (payments), `RESEND_API_KEY` + `EMAIL_FROM` (email) and Hubtel keys (SMS), then redeploy. Without a payment key, instant bookings show "online payment not yet available" before any slot is reserved. Approval-mode requests still work.
+7. **Custom domain (when you have one):** Vercel → Settings → Domains → Add, then create the DNS records it shows at your registrar. Set `APP_URL=https://your-domain` and redeploy.
+
+Demo data never loads in production. The live site starts empty and fills as providers apply and you approve them.
+
+---
+
+## Self-hosted alternative
+
 ## 1. What you need
 
 | Component | Recommended | Notes |

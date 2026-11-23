@@ -1,4 +1,5 @@
 import { db, type Tx } from "../db";
+import { appUrl } from "../app-url";
 import { sendEmail, sendSms } from "./channels";
 
 export type NotifyEvent =
@@ -42,7 +43,7 @@ export async function processDeliveries(limit = 50) {
     if (!claimed.count) continue;
     try {
       const n = d.notification;
-      const url = n.link ? `${process.env.APP_URL ?? ""}${n.link}` : "";
+      const url = n.link ? `${appUrl()}${n.link}` : "";
       if (d.channel === "EMAIL") await sendEmail(d.destination, n.title, `${n.body}${url ? `\n\n${url}` : ""}`);
       else await sendSms(d.destination, `${n.title}: ${n.body}`.slice(0, 459));
       await db.notificationDelivery.update({ where: { id: d.id }, data: { status: "SENT", sentAt: new Date(), lastError: null } });

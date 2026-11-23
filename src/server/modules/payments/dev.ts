@@ -5,6 +5,7 @@
  * path is still exercised.
  */
 import { db } from "../../db";
+import { appUrl } from "../../app-url";
 import { hmacHex, safeEqual, sha256 } from "../../crypto";
 import type { PaymentGateway } from "./gateway";
 
@@ -34,7 +35,7 @@ export const devGateway: PaymentGateway = {
     if (!devGatewayEnabled()) throw new Error("Dev gateway disabled");
     const value: DevState = { amountMinor: i.amountMinor, currency: i.currency };
     await db.platformSetting.upsert({ where: { key: stateKey(i.reference) }, create: { key: stateKey(i.reference), value }, update: { value } });
-    return { authorizationUrl: `${process.env.APP_URL ?? ""}/dev-checkout/${i.reference}` };
+    return { authorizationUrl: `${appUrl()}/dev-checkout/${i.reference}` };
   },
 
   async verify(reference) {
