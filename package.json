@@ -26,7 +26,7 @@
     "lucide-react": "^1.77.0",
     "next": "15.5.29",
     "otpauth": "^9.6.0",
-    "prisma": "^6.19.3",
+    "prisma": "^7.10.1",
     "qrcode": "^1.5.4",
     "react": "19.1.0",
     "react-dom": "19.1.0",
