@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, BadgeCheck, CalendarClock, MapPin, Search, ShieldCheck, Smartphone, Sparkles, Star, Wallet } from "lucide-react";
+import { ArrowRight, BadgeCheck, CalendarClock, Search, ShieldCheck, Smartphone, Sparkles, Star, Wallet } from "lucide-react";
 import { db } from "@/server/db";
 import { searchProviders } from "@/server/modules/search";
 import { ProviderCard } from "@/components/site/provider-card";
@@ -41,35 +41,21 @@ export default async function Home() {
             <p className="glass inline-flex items-center gap-2 rounded-full px-3 py-1.5 text-xs font-medium text-brand-dark">
               <BadgeCheck className="size-4 text-brand" /> Verified professionals
             </p>
-            <h1 className="mt-6 text-4xl font-semibold leading-[1.08] tracking-tight text-ink sm:text-5xl lg:text-[3.6rem]">
-              Beauty, <span className="text-brand">booked.</span>
+            <h1 className="mt-6 max-w-xl text-4xl font-semibold leading-[1.1] tracking-tight text-ink sm:text-5xl lg:text-[3.4rem]">
+              Book trusted <span className="text-brand">beauty professionals</span> near you
             </h1>
-            <p className="mt-4 max-w-md text-lg text-muted">Trusted beauty pros near you.</p>
+            <p className="mt-5 max-w-lg text-lg leading-relaxed text-muted">Makeup artists, barbers, braiders, nail and lash technicians across Ghana. See their work, pick a time and pay with Mobile Money or card.</p>
 
             <form action="/search" className="glass mt-8 rounded-[28px] p-2 shadow-[0_20px_50px_-24px_rgba(18,61,117,.45)]">
               <div className="flex flex-col gap-2 sm:flex-row sm:items-center">
                 <label className="flex flex-1 items-center gap-3 px-3">
                   <Search className="size-5 shrink-0 text-muted" aria-hidden />
                   <span className="sr-only">What are you looking for?</span>
-                  <input name="q" placeholder="Search a service" className="h-12 w-full bg-transparent text-[15px] placeholder:text-muted/80 focus:outline-none" />
-                </label>
-                <label className="flex items-center gap-2 rounded-2xl bg-white/70 px-3 sm:w-48">
-                  <MapPin className="size-5 shrink-0 text-muted" aria-hidden />
-                  <span className="sr-only">City</span>
-                  <select name="city" className="h-12 w-full bg-transparent text-[15px] focus:outline-none">
-                    <option value="">Any city</option>
-                    {cities.map((c) => <option key={c.id} value={c.slug}>{c.name}</option>)}
-                  </select>
+                  <input name="q" placeholder="Search a service or area, e.g. braids in Accra" className="h-12 w-full bg-transparent text-[15px] placeholder:text-muted/80 focus:outline-none" />
                 </label>
                 <button className={btn({ size: "lg", className: "h-12 px-7" })}>Search</button>
               </div>
             </form>
-            <ul className="mt-6 flex flex-wrap gap-x-6 gap-y-2 text-sm font-medium text-ink">
-              {[[ShieldCheck, "Verified pros"], [Smartphone, "MoMo & card"], [CalendarClock, "Free cancellation"]].map(([Icon, t]) => {
-                const I = Icon as typeof ShieldCheck;
-                return <li key={t as string} className="flex items-center gap-2"><I className="size-4 text-brand" strokeWidth={2} />{t as string}</li>;
-              })}
-            </ul>
           </div>
           <HeroVisual imageUrl={banner?.imageUrl} />
         </div>
