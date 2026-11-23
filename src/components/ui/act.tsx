@@ -6,13 +6,13 @@ import { Field, Input, Select, Textarea } from "./index";
 type Action = (prev: ActionResult | null, fd: FormData) => Promise<ActionResult>;
 
 /** One-click action button with hidden fields (optionally confirmed). */
-export function Act({ action, fields, label, variant = "secondary", size = "sm", confirm, reason }: {
-  action: Action; fields: Record<string, string>; label: string; variant?: "primary" | "secondary" | "danger" | "ghost"; size?: "sm" | "md"; confirm?: string; reason?: string;
+export function Act({ action, fields, label, variant = "secondary", size = "sm", confirm, reason, reasonName = "reason" }: {
+  action: Action; fields: Record<string, string>; label: string; variant?: "primary" | "secondary" | "danger" | "ghost"; size?: "sm" | "md"; confirm?: string; reason?: string; reasonName?: string;
 }) {
   return (
     <ActionForm action={action} confirm={confirm} className="inline-block">
       {Object.entries(fields).map(([k, v]) => <input key={k} type="hidden" name={k} value={v} />)}
-      {reason && <Input name="reason" placeholder={reason} className="mb-2 h-9" required />}
+      {reason && <Input name={reasonName} placeholder={reason} className="mb-2 h-9" required />}
       <Submit variant={variant} size={size} pendingText="…">{label}</Submit>
     </ActionForm>
   );
