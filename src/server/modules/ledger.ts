@@ -62,7 +62,7 @@ export async function providerBalances(providerId: string, tx: Tx = db) {
   const accounts = await tx.ledgerAccount.findMany({ where: { providerId } });
   const out: Record<string, { pending: number; available: number; reserved: number }> = {};
   for (const a of accounts) {
-    const bal = -(await rawBalance(tx, a.id));
+    const bal = 0 - (await rawBalance(tx, a.id)) || 0;
     const slot = (out[a.currency] ??= { pending: 0, available: 0, reserved: 0 });
     if (a.code.endsWith(`:pending:${a.currency}`)) slot.pending = bal;
     else if (a.code.endsWith(`:available:${a.currency}`)) slot.available = bal;
